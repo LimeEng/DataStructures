@@ -6,7 +6,6 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class LinkedStack<T> implements Stack<T> {
 
@@ -137,14 +136,14 @@ public class LinkedStack<T> implements Stack<T> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contents);
+		return contents.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ArrayStack) {
 			LinkedStack<?> stack = (LinkedStack<?>) obj;
-			return Objects.equals(contents, stack.contents);
+			return contents.equals(stack.contents);
 		}
 		return false;
 	}

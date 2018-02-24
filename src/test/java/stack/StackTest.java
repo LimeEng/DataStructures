@@ -13,15 +13,15 @@ import org.junit.Test;
 
 public class StackTest {
 
-	private Stack<Integer> stack;
-
+	protected Stack<Integer> stack;
+	
 	@Before
-	public void setUp() throws Exception {
-		stack = new ArrayStack<>();
+	public void setUp() {
+		stack = new SimpleStack<>();
 	}
 
 	@After
-	public void tearDown() throws Exception {
+	public void tearDown() {
 		stack = null;
 	}
 

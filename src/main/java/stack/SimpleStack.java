@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class SimpleStack<T> implements Stack<T> {
 
@@ -70,14 +69,14 @@ public class SimpleStack<T> implements Stack<T> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contents);
+		return contents.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof SimpleStack) {
 			SimpleStack<?> stack = (SimpleStack<?>) obj;
-			return Objects.equals(contents, stack.contents);
+			return contents.equals(stack.contents);
 		}
 		return false;
 	}

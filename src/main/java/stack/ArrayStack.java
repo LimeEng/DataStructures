@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 
 public class ArrayStack<T> implements Stack<T> {
 
@@ -163,14 +162,14 @@ public class ArrayStack<T> implements Stack<T> {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(contents);
+		return contents.hashCode();
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (obj instanceof ArrayStack) {
 			ArrayStack<?> stack = (ArrayStack<?>) obj;
-			return Objects.equals(contents, stack.contents);
+			return contents.equals(stack.contents);
 		}
 		return false;
 	}

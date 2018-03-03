@@ -11,13 +11,15 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class StackTest {
+public abstract class StackTest<T extends Stack<Integer>> {
 
-	protected Stack<Integer> stack;
+	protected T stack;
+	
+	protected abstract T createInstance();
 	
 	@Before
 	public void setUp() {
-		stack = new SimpleStack<>();
+		stack = createInstance();
 	}
 
 	@After
@@ -302,6 +304,4 @@ public class StackTest {
 		assertTrue("Clearing the stack does not update the size properly", stack.size() == 0);
 		assertTrue("Clearing the stack does not update isEmpty() properly", stack.isEmpty());
 	}
-
 }
-

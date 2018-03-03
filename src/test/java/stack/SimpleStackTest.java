@@ -1,12 +1,9 @@
 package stack;
 
-import org.junit.Before;
-
-public class SimpleStackTest extends StackTest {
+public class SimpleStackTest extends StackTest<SimpleStack<Integer>> {
 
 	@Override
-	@Before
-	public void setUp() {
-		stack = new SimpleStack<>();
+	protected SimpleStack<Integer> createInstance() {
+		return new SimpleStack<>();
 	}
 }

@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -166,6 +168,38 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		Integer test = null;
 		boolean result = stack.push(test);
 		assertFalse("Trying to push null returns true", result);
+		assertTrue("Size changed when trying to push null", stack.isEmpty());
+	}
+
+	@Test
+	public final void testPushEmptyCollection() {
+		List<Integer> list = new ArrayList<>();
+		boolean changed = stack.push(list);
+		assertFalse("Pushing an empty collection indicates that something changed", changed);
+		assertTrue("Size changed when trying to push an empty collection", stack.isEmpty());
+	}
+
+	@Test
+	public final void testPushFilledCollection() {
+		List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
+		boolean changed = stack.push(list);
+		assertTrue("Pushing an empty list indicates that something changed", changed);
+		assertEquals("Incorrect size when adding collection", list.size(), stack.size());
+	}
+
+	@Test
+	public final void testPushNullCollection() {
+		List<Integer> list = null;
+		boolean changed = stack.push(list);
+		assertFalse("Pushing an null list indicates that something changed", changed);
+		assertTrue("Size changed when trying to push a null collection", stack.isEmpty());
+	}
+
+	@Test
+	public final void testAddNull() {
+		Integer test = null;
+		boolean result = stack.add(test);
+		assertFalse("Trying to add null returns true", result);
 	}
 
 	@Test

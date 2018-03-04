@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 import org.junit.After;
 import org.junit.Before;
@@ -113,11 +114,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void manyReverse() {
-		stack.push(1);
-		stack.push(2);
-		stack.push(3);
-		stack.push(4);
-		stack.push(5);
+		fillStack(1, 6);
 		boolean changed = stack.reverse();
 		assertEquals("Wrong element retrieved", new Integer(1), stack.pop());
 		assertEquals("Wrong element retrieved", new Integer(2), stack.pop());
@@ -172,6 +169,27 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	}
 
 	@Test
+	public final void testPushNormal() {
+		boolean success = stack.push(0);
+		assertEquals("Size does not update when pushing item", 1, stack.size());
+		assertTrue("Not indicating success on push", success);
+	}
+
+	@Test
+	public final void testAddNull() {
+		Integer test = null;
+		boolean result = stack.add(test);
+		assertFalse("Trying to add null returns true", result);
+	}
+
+	@Test
+	public final void testAddNormal() {
+		boolean success = stack.add(0);
+		assertEquals("Size does not update when adding item", 1, stack.size());
+		assertTrue("Not indicating success on add", success);
+	}
+
+	@Test
 	public final void testPushEmptyCollection() {
 		List<Integer> list = new ArrayList<>();
 		boolean changed = stack.push(list);
@@ -184,7 +202,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
 		boolean changed = stack.push(list);
 		assertTrue("Pushing an empty list indicates that something changed", changed);
-		assertEquals("Incorrect size when adding collection", list.size(), stack.size());
+		assertEquals("Incorrect size when pushing collection", list.size(), stack.size());
 	}
 
 	@Test
@@ -196,10 +214,27 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	}
 
 	@Test
-	public final void testAddNull() {
-		Integer test = null;
-		boolean result = stack.add(test);
-		assertFalse("Trying to add null returns true", result);
+	public final void testAddEmptyCollection() {
+		List<Integer> list = new ArrayList<>();
+		boolean changed = stack.addAll(list);
+		assertFalse("Adding an empty collection indicates that something changed", changed);
+		assertTrue("Size changed when trying to add an empty collection", stack.isEmpty());
+	}
+
+	@Test
+	public final void testAddFilledCollection() {
+		List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8));
+		boolean changed = stack.addAll(list);
+		assertTrue("Adding an empty list indicates that something changed", changed);
+		assertEquals("Incorrect size when adding collection", list.size(), stack.size());
+	}
+
+	@Test
+	public final void testAddNullCollection() {
+		List<Integer> list = null;
+		boolean changed = stack.addAll(list);
+		assertFalse("Adding an null list indicates that something changed", changed);
+		assertTrue("Size changed when trying to add a null collection", stack.isEmpty());
 	}
 
 	@Test
@@ -228,9 +263,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	public final void testOrder() {
 		int max = 50;
 		int min = 0;
-		for (int i = min; i < max; i++) {
-			stack.push(i);
-		}
+		fillStack(min, max);
 		for (int i = max - 1; i >= min; i--) {
 			int k = stack.pop();
 			assertEquals("Pop returns incorrect element", i, k);
@@ -249,9 +282,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		stack.pop();
 		assertTrue("Wrong size after pop", stack.size() == 0);
 		assertTrue("Stack not empty after pop", stack.isEmpty());
-		for (int i = 0; i < 10; i++) {
-			stack.push(i);
-		}
+		fillStack(10);
 		assertTrue("Wrong size after push", stack.size() == 10);
 		for (int i = 9; i >= 0; i--) {
 			int k = stack.pop();
@@ -263,9 +294,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testPopUntilEmpty() {
-		for (int i = 0; i < 10; i++) {
-			stack.push(i);
-		}
+		fillStack(10);
 		int counter = 9;
 		while (!stack.isEmpty()) {
 			int i = stack.pop();
@@ -314,9 +343,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testIterationOrder() {
-		for (int i = 0; i < 10; i++) {
-			stack.push(i);
-		}
+		fillStack(10);
 		int counter = 9;
 		for (int i : stack) {
 			assertEquals("Iterator returning wrong element", i, counter);
@@ -332,9 +359,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testSearchOnFilledWhereValuePresent() {
-		for (int i = 0; i < 10; i++) {
-			stack.push(i);
-		}
+		fillStack(10);
 		Optional<Integer> value = stack.search((e) -> e.equals(3));
 		assertTrue("Searching in a filled stack returns the wrong value", value.isPresent());
 		assertEquals("Searching in a filled stack where the value is present returns the wrong value", 6,
@@ -343,29 +368,89 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testSearchOnFilledWhereValueAbsent() {
-		for (int i = 0; i < 10; i++) {
-			stack.push(i);
-		}
+		fillStack(10);
 		Optional<Integer> value = stack.search((e) -> e.equals(30));
 		assertTrue("Searching in a filled stack where the value is absent returns the wrong value", !value.isPresent());
 	}
 
 	@Test
 	public final void testSearchOnFilledWhereValueNull() {
-		for (int i = 0; i < 10; i++) {
-			stack.push(i);
-		}
+		fillStack(10);
 		Optional<Integer> value = stack.search(null);
 		assertTrue("Searching in a filled stack where the value is absent returns the wrong value", !value.isPresent());
 	}
 
 	@Test
 	public final void testClear() {
-		for (int i = 0; i < 100; i++) {
-			stack.push(i);
-		}
+		fillStack(100);
 		stack.clear();
 		assertTrue("Clearing the stack does not update the size properly", stack.size() == 0);
 		assertTrue("Clearing the stack does not update isEmpty() properly", stack.isEmpty());
+	}
+
+	@Test
+	public final void testPeekWhileFilled() {
+		fillStack(10);
+		Predicate<Integer> pred = e -> e > 5;
+		List<Integer> values = stack.peekWhile(pred);
+		assertEquals("peekWhile returns wrong list", 4, values.size());
+		assertEquals("peekWhile changed the size of the stack", 10, stack.size());
+
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6));
+		assertEquals("The returned list does not match the expected one", expected, values);
+	}
+
+	@Test
+	public final void testPeekWhileEmpty() {
+		Predicate<Integer> pred = e -> e > 5;
+		List<Integer> values = stack.peekWhile(pred);
+		assertTrue("peekWhile returns wrong list", values.isEmpty());
+		assertTrue("peekWhile changed the size of the stack", stack.isEmpty());
+	}
+
+	@Test
+	public final void testPeekWhileNullPredicate() {
+		fillStack(10);
+		List<Integer> values = stack.peekWhile(null);
+		assertTrue("peekWhile with a null predicate returns a filled list", values.isEmpty());
+		assertEquals("peekWhile with a null predicate changed the size of the stack", 10, stack.size());
+	}
+
+	@Test
+	public final void testPopWhileFilled() {
+		fillStack(10);
+		Predicate<Integer> pred = e -> e > 5;
+		List<Integer> values = stack.popWhile(pred);
+		assertEquals("popWhile returns wrong list", 4, values.size());
+		assertEquals("popWhile did not update size correctly", 6, stack.size());
+		
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6));
+		assertEquals("The returned list does not match the expected one", expected, values);
+	}
+
+	@Test
+	public final void testPopWhileEmpty() {
+		Predicate<Integer> pred = e -> e > 5;
+		List<Integer> values = stack.peekWhile(pred);
+		assertTrue("popWhile returns wrong list", values.isEmpty());
+		assertTrue("popWhile with an empty stack changed the size of the stack", stack.isEmpty());
+	}
+
+	@Test
+	public final void testPopWhileNullPredicate() {
+		fillStack(10);
+		List<Integer> values = stack.popWhile(null);
+		assertTrue("popWhile with a null predicate returns a filled list", values.isEmpty());
+		assertEquals("popWhile with a null predicate changed the size of the stack", 10, stack.size());
+	}
+
+	private void fillStack(int min, int max) {
+		for (int i = min; i < max; i++) {
+			stack.push(i);
+		}
+	}
+
+	private void fillStack(int limit) {
+		fillStack(0, limit);
 	}
 }

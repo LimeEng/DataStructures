@@ -111,6 +111,9 @@ public class LinkedStack<T> implements Stack<T> {
 
 	@Override
 	public boolean removeAll(Collection<?> c) {
+		if (c == null) {
+			return false;
+		}
 		return contents.removeAll(c);
 	}
 

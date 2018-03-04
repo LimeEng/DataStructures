@@ -124,6 +124,9 @@ public class ArrayStack<T> implements Stack<T> {
 
 	@Override
 	public boolean containsAll(Collection<?> c) {
+		if (c == null) {
+			return false;
+		}
 		return contents.containsAll(c);
 	}
 

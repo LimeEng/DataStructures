@@ -1,6 +1,7 @@
 package stack;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
@@ -14,9 +15,9 @@ import org.junit.Test;
 public abstract class StackTest<T extends Stack<Integer>> {
 
 	protected T stack;
-	
+
 	protected abstract T createInstance();
-	
+
 	@Before
 	public void setUp() {
 		stack = createInstance();
@@ -136,6 +137,35 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		int i = stack.peek();
 		assertEquals("Wrong element retrieved", 1, i);
 		assertTrue("Wrong size", stack.size() == 1);
+	}
+
+	@Test
+	public final void testEmptyPeek() {
+		boolean thrown = false;
+		try {
+			stack.peek();
+		} catch (NoSuchElementException e) {
+			thrown = true;
+		}
+		assertTrue("Peeking on an empty stack does not throw an exception", thrown);
+	}
+
+	@Test
+	public final void testEmptyPop() {
+		boolean thrown = false;
+		try {
+			stack.pop();
+		} catch (NoSuchElementException e) {
+			thrown = true;
+		}
+		assertTrue("Popping on an empty stack does not throw an exception", thrown);
+	}
+
+	@Test
+	public final void testPushNull() {
+		Integer test = null;
+		boolean result = stack.push(test);
+		assertFalse("Trying to push null returns true", result);
 	}
 
 	@Test

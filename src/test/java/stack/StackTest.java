@@ -509,6 +509,46 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		assertFalse("containsAll returns true on an empty stack", contains);
 		assertEquals("Size is no longer correct", 0, stack.size());
 	}
+	
+	@Test
+	public final void testRemoveSingleNull() {
+		
+	}
+	
+	@Test
+	public final void testRemoveSingleValidValue() {
+		
+	}
+	
+	@Test
+	public final void testRemoveSingleInvalidValue() {
+		
+	}
+	
+	@Test
+	public final void testRemoveAllNullCollection() {
+		
+	}
+	
+	@Test
+	public final void testRemoveAllPartialNullCollection() {
+		
+	}
+	
+	@Test
+	public final void testRemoveAllEmptyCollection() {
+		
+	}
+	
+	@Test
+	public final void testRemoveAllValidCollection() {
+		
+	}
+	
+	@Test
+	public final void testRemoveAllInvalidCollection() {
+		
+	}
 
 	private void fillStack(int min, int max) {
 		for (int i = min; i < max; i++) {

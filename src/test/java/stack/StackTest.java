@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Predicate;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -678,6 +677,72 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		String string = stack.getPrettyString();
 		assertEquals("The pretty string returned from an empty stack is malformed", "[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]",
 				string);
+	}
+
+	@Test
+	public final void testBasicEquals() {
+		Stack<Integer> s1 = createInstance();
+		Stack<Integer> s2 = createInstance();
+		testShouldBeEqual(s1, s2);
+	}
+	
+	@Test
+	public final void testEqualsFilledStacksReturnsTrue() {
+		Stack<Integer> s1 = createInstance();
+		Stack<Integer> s2 = createInstance();
+		fillStack(s1, 10);
+		fillStack(s2, 10);
+		testShouldBeEqual(s1, s2);
+	}
+	
+	@Test
+	public final void testEqualsFilledStacksReturnsFalse() {
+		Stack<Integer> s1 = createInstance();
+		Stack<Integer> s2 = createInstance();
+		fillStack(s1, 10);
+		fillStack(s2, 15);
+		testShouldNotBeEqual(s1, s2);
+	}
+	
+	@Test
+	public final void testEqualsFilledStacksReturnsFalse2() {
+		Stack<Integer> s1 = createInstance();
+		Stack<Integer> s2 = createInstance();
+		fillStack(s1, 10);
+		fillStack(s2, 7);
+		s2.add(9);
+		s2.add(8);
+		s2.add(10);
+		testShouldNotBeEqual(s1, s2);
+	}
+
+	private void testShouldBeEqual(Object o1, Object o2) {
+		assertTrue("According to equals(), the object is not equal to itself", o1.equals(o1));
+		assertTrue("According to equals(), the object is not equal to itself", o2.equals(o2));
+		assertTrue("According to equals(), the objects are not equal", o1.equals(o2));
+		assertTrue("According to equals(), the objects are not equal", o2.equals(o1));
+		assertFalse("According to equals(), the object is equal to null", o1.equals(null));
+		assertFalse("According to equals(), the object is equal to null", o2.equals(null));
+		assertEquals("The two hash codes are not equal", o1.hashCode(), o2.hashCode());
+	}
+	
+	private void testShouldNotBeEqual(Object o1, Object o2) {
+		assertTrue("According to equals(), the object is not equal to itself", o1.equals(o1));
+		assertTrue("According to equals(), the object is not equal to itself", o2.equals(o2));
+		assertFalse("According to equals(), the objects are equal", o1.equals(o2));
+		assertFalse("According to equals(), the objects are equal", o2.equals(o1));
+		assertFalse("According to equals(), the object is equal to null", o1.equals(null));
+		assertFalse("According to equals(), the object is equal to null", o2.equals(null));
+	}
+
+	private void fillStack(Stack<Integer> stack, int min, int max) {
+		for (int i = min; i < max; i++) {
+			stack.push(i);
+		}
+	}
+
+	private void fillStack(Stack<Integer> stack, int limit) {
+		fillStack(stack, 0, limit);
 	}
 
 	private void fillStack(int min, int max) {

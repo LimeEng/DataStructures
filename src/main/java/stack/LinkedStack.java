@@ -119,6 +119,9 @@ public class LinkedStack<T> implements Stack<T> {
 
 	@Override
 	public boolean retainAll(Collection<?> c) {
+		if (c == null) {
+			return false;
+		}
 		return contents.retainAll(c);
 	}
 

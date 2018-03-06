@@ -519,7 +519,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(4, 3, 2, 1, 0));
-		assertEquals("Removing null modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Removing null modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -531,7 +531,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 4, 3, 2, 1, 0));
-		assertEquals("Removing a valid value modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Removing a valid value modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -543,7 +543,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
-		assertEquals("Removing an invalid value modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Removing an invalid value modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -555,7 +555,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
-		assertEquals("Passing a null collection to removeAll modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Passing a null collection to removeAll modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -568,7 +568,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 7, 6, 0));
-		assertEquals("Passing a collection to removeAll modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Passing a collection to removeAll modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -581,7 +581,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
-		assertEquals("Passing an empty collection to removeAll modifes the stack in an incorrect way", expected,
+		assertEquals("Passing an empty collection to removeAll modifies the stack in an incorrect way", expected,
 				actual);
 	}
 
@@ -595,7 +595,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 0));
-		assertEquals("Passing a collection to removeAll modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Passing a collection to removeAll modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -608,7 +608,62 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
-		assertEquals("Passing a collection to removeAll modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Passing a collection to removeAll modifies the stack in an incorrect way", expected, actual);
+	}
+
+	@Test
+	public final void testRetainAllNullCollection() {
+		fillStack(10);
+		boolean modified = stack.retainAll(null);
+		assertFalse("Incorrect return value", modified);
+		assertEquals("The size of the stack is not correct", 10, stack.size());
+
+		List<Integer> actual = stack.popWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		assertEquals("Passing null to retainAll modifies the stack in an incorrect way", expected, actual);
+	}
+
+	@Test
+	public final void testRetainAllCollectionWithNulls() {
+		fillStack(10);
+		List<Integer> values = new ArrayList<>(Arrays.asList(15, null, null, null, 16, 17));
+		boolean modified = stack.retainAll(values);
+		assertTrue("Incorrect return value", modified);
+		assertTrue("The size of the stack is not correct", stack.isEmpty());
+
+		List<Integer> actual = stack.popWhile(e -> true);
+		List<Integer> expected = new ArrayList<>();
+		assertEquals("Passing a collection with nulls to retainAll modifies the stack in an incorrect way", expected,
+				actual);
+	}
+
+	@Test
+	public final void testRetainAllNoneMatching() {
+		fillStack(10);
+		List<Integer> values = new ArrayList<>(Arrays.asList(20, 19, 18, 17, 16, 15, 14, 13, 12, 11));
+		boolean modified = stack.retainAll(values);
+		assertTrue("Incorrect return value", modified);
+		assertTrue("The size of the stack is not correct", stack.isEmpty());
+
+		List<Integer> actual = stack.popWhile(e -> true);
+		List<Integer> expected = new ArrayList<>();
+		assertEquals(
+				"Passing a collection with only values that are not present on the stack, to retainAll modifies the stack in an incorrect way",
+				expected, actual);
+	}
+
+	@Test
+	public final void testRetainAllSomeMatching() {
+		fillStack(10);
+		List<Integer> values = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 3, 3, 4, 5, 15, 16, 176));
+		boolean modified = stack.retainAll(values);
+		assertTrue("Incorrect return value", modified);
+		assertEquals("The size of the stack is not correct", 6, stack.size());
+
+		List<Integer> actual = stack.popWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 1, 0));
+		assertEquals("retainAll does not behave as expected, because it modifies the stack in an incorrect way",
+				expected, actual);
 	}
 
 	private void fillStack(int min, int max) {

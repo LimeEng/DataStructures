@@ -382,7 +382,12 @@ public interface Stack<T> extends Collection<T> {
 	 */
 	@Override
 	default Object[] toArray() {
-		return new ArrayList<>(this).toArray();
+		Object[] result = new Object[size()];
+		int i = 0;
+		for (T item : this) {
+			result[i++] = item;
+		}
+		return result;
 	}
 
 	/**
@@ -399,9 +404,24 @@ public interface Stack<T> extends Collection<T> {
 	 * 
 	 * @return an array containing all of the elements in this collection.
 	 */
+	@SuppressWarnings("unchecked")
 	@Override
 	default <E> E[] toArray(E[] a) {
-		return new ArrayList<>(this).toArray(a);
+		int size = size();
+		if (a.length < size) {
+			a = (E[]) java.lang.reflect.Array.newInstance(a.getClass()
+					.getComponentType(), size);
+		}
+		Object[] result = a;
+		int i = 0;
+		for (T item : this) {
+			result[i++] = item;
+		}
+
+		if (a.length > size) {
+			a[size] = null;
+		}
+		return a;
 	}
 
 	/**

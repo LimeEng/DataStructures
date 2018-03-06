@@ -1,6 +1,6 @@
 package stack;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -730,6 +730,49 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		s2.add(8);
 		s2.add(10);
 		testShouldNotBeEqual(s1, s2);
+	}
+
+	@Test
+	public final void testToArrayEmptyStack() {
+		Object[] array = stack.toArray();
+		assertEquals("Created array does not have the correct length", stack.size(), array.length);
+		array = null;
+		assertTrue("Setting the returned array to null changes the stack", stack.isEmpty());
+		assertTrue("Setting the returned array to null changes the stack", stack.push(5));
+	}
+
+	@Test
+	public final void testToArrayFilledStack() {
+		fillStack(10);
+		Object[] array = stack.toArray();
+		assertEquals("Created array does not have the correct length", stack.size(), array.length);
+
+		List<Integer> expected = stack.peekWhile(e -> true);
+		assertArrayEquals("The returned array is malformed", expected.toArray(), array);
+
+		array[0] = 100;
+		assertNotEquals("Modifying the returned array modifies the stack aswell", array[0], stack.pop());
+
+		array = null;
+		assertFalse("Setting the returned array to null changes the stack", stack.isEmpty());
+		assertTrue("Setting the returned array to null changes the stack", stack.push(5));
+	}
+
+	@Test
+	public final void testToArrayWithTypeEmptyStack() {
+		Integer[] a = new Integer[2];
+		Integer[] array = stack.toArray(a);
+		// TODO: ...
+	}
+
+	@Test
+	public final void testToArrayWithTypeFilledStackAndBiggerStartArray() {
+		// TODO: ...
+	}
+
+	@Test
+	public final void testToArrayWithTypeFilledStackAndSmallerStartArray() {
+		// TODO: ...
 	}
 
 	private void testShouldBeEqual(Object o1, Object o2) {

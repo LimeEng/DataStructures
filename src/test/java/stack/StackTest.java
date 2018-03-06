@@ -205,6 +205,14 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	}
 
 	@Test
+	public final void testPushPartiallyNullCollection() {
+		List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, null, null, 6, 7, 8));
+		boolean changed = stack.push(list);
+		assertTrue("Wrong return value", changed);
+		assertEquals("Incorrect size when pushing collection", list.size() - 2, stack.size());
+	}
+
+	@Test
 	public final void testPushNullCollection() {
 		List<Integer> list = null;
 		boolean changed = stack.push(list);
@@ -226,6 +234,14 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		boolean changed = stack.addAll(list);
 		assertTrue("Adding an empty list indicates that something changed", changed);
 		assertEquals("Incorrect size when adding collection", list.size(), stack.size());
+	}
+
+	@Test
+	public final void testAddPartiallyNullCollection() {
+		List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, null, null, 6, 7, 8));
+		boolean changed = stack.addAll(list);
+		assertTrue("Wrong return value", changed);
+		assertEquals("Incorrect size when pushing collection", list.size() - 2, stack.size());
 	}
 
 	@Test
@@ -685,7 +701,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		Stack<Integer> s2 = createInstance();
 		testShouldBeEqual(s1, s2);
 	}
-	
+
 	@Test
 	public final void testEqualsFilledStacksReturnsTrue() {
 		Stack<Integer> s1 = createInstance();
@@ -694,7 +710,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		fillStack(s2, 10);
 		testShouldBeEqual(s1, s2);
 	}
-	
+
 	@Test
 	public final void testEqualsFilledStacksReturnsFalse() {
 		Stack<Integer> s1 = createInstance();
@@ -703,7 +719,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		fillStack(s2, 15);
 		testShouldNotBeEqual(s1, s2);
 	}
-	
+
 	@Test
 	public final void testEqualsFilledStacksReturnsFalse2() {
 		Stack<Integer> s1 = createInstance();
@@ -725,7 +741,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		assertFalse("According to equals(), the object is equal to null", o2.equals(null));
 		assertEquals("The two hash codes are not equal", o1.hashCode(), o2.hashCode());
 	}
-	
+
 	private void testShouldNotBeEqual(Object o1, Object o2) {
 		assertTrue("According to equals(), the object is not equal to itself", o1.equals(o1));
 		assertTrue("According to equals(), the object is not equal to itself", o2.equals(o2));

@@ -666,6 +666,20 @@ public abstract class StackTest<T extends Stack<Integer>> {
 				expected, actual);
 	}
 
+	@Test
+	public final void testPrettyStringEmptyStack() {
+		String string = stack.getPrettyString();
+		assertEquals("The pretty string returned from an empty stack is malformed", "[]", string);
+	}
+
+	@Test
+	public final void testPrettyStringFilledStack() {
+		fillStack(10);
+		String string = stack.getPrettyString();
+		assertEquals("The pretty string returned from an empty stack is malformed", "[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]",
+				string);
+	}
+
 	private void fillStack(int min, int max) {
 		for (int i = min; i < max; i++) {
 			stack.push(i);

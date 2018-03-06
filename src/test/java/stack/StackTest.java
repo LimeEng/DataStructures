@@ -643,6 +643,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		fillStack(s2, 7);
 		s2.add(9);
 		s2.add(8);
+		s2.add(10);
 		testShouldNotBeEqual(s1, s2);
 	}
 

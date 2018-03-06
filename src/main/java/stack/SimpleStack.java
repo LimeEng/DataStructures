@@ -87,7 +87,7 @@ public class SimpleStack<T> implements Stack<T> {
 		Iterator<T> t1 = this.iterator();
 		Iterator<?> t2 = other.iterator();
 
-		while (t1.hasNext() && t2.hasNext()) {
+		while (t1.hasNext()) {
 			T o1 = t1.next();
 			Object o2 = t2.next();
 
@@ -95,7 +95,7 @@ public class SimpleStack<T> implements Stack<T> {
 				return false;
 			}
 		}
-		return !(t1.hasNext() || t2.hasNext());
+		return true;
 	}
 
 }

@@ -634,6 +634,17 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		fillStack(s2, 15);
 		testShouldNotBeEqual(s1, s2);
 	}
+	
+	@Test
+	public final void testEqualsFilledStacksReturnsFalse2() {
+		Stack<Integer> s1 = createInstance();
+		Stack<Integer> s2 = createInstance();
+		fillStack(s1, 10);
+		fillStack(s2, 7);
+		s2.add(9);
+		s2.add(8);
+		testShouldNotBeEqual(s1, s2);
+	}
 
 	private void testShouldBeEqual(Object o1, Object o2) {
 		assertTrue("According to equals(), the object is not equal to itself", o1.equals(o1));

@@ -74,11 +74,28 @@ public class SimpleStack<T> implements Stack<T> {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (obj instanceof SimpleStack) {
-			SimpleStack<?> stack = (SimpleStack<?>) obj;
-			return contents.equals(stack.contents);
+		if (obj == this) {
+			return true;
+		} else if (!(obj instanceof Stack)) {
+			return false;
 		}
-		return false;
+		Stack<?> other = (Stack<?>) obj;
+		if (other.size() != this.size()) {
+			return false;
+		}
+
+		Iterator<T> t1 = this.iterator();
+		Iterator<?> t2 = other.iterator();
+
+		while (t1.hasNext() && t2.hasNext()) {
+			T o1 = t1.next();
+			Object o2 = t2.next();
+
+			if (!o1.equals(o2)) {
+				return false;
+			}
+		}
+		return !(t1.hasNext() || t2.hasNext());
 	}
 
 }

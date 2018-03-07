@@ -751,7 +751,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		assertArrayEquals("The returned array is malformed", expected.toArray(), array);
 
 		array[0] = 100;
-		assertNotEquals("Modifying the returned array modifies the stack aswell", array[0], stack.pop());
+		assertNotEquals("Modifying the returned array modifies the stack aswell", array[0], stack.peek());
 
 		array = null;
 		assertFalse("Setting the returned array to null changes the stack", stack.isEmpty());
@@ -760,19 +760,41 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testToArrayWithTypeEmptyStack() {
-		Integer[] a = new Integer[2];
+		Integer[] a = new Integer[0];
 		Integer[] array = stack.toArray(a);
-		// TODO: ...
+		assertEquals("Incorrect array size", 0, array.length);
 	}
 
 	@Test
 	public final void testToArrayWithTypeFilledStackAndBiggerStartArray() {
-		// TODO: ...
+		fillStack(10);
+		Integer[] a = new Integer[20];
+		Integer[] array = stack.toArray(a);
+		assertEquals("Incorrect array size", 20, array.length);
+		assertEquals("The stack was modified when creating a new array", 10, stack.size());
+		
+		array[0] = 100;
+		assertNotEquals("Modifying the returned array modifies the stack aswell", array[0], stack.peek());
+		
+		array = null;
+		assertFalse("Setting the returned array to null changes the stack", stack.isEmpty());
+		assertTrue("Setting the returned array to null changes the stack", stack.push(5));
 	}
 
 	@Test
 	public final void testToArrayWithTypeFilledStackAndSmallerStartArray() {
-		// TODO: ...
+		fillStack(10);
+		Integer[] a = new Integer[5];
+		Integer[] array = stack.toArray(a);
+		assertEquals("Incorrect array size", 10, array.length);
+		assertEquals("The stack was modified when creating a new array", 10, stack.size());
+		
+		array[0] = 100;
+		assertNotEquals("Modifying the returned array modifies the stack aswell", array[0], stack.peek());
+		
+		array = null;
+		assertFalse("Setting the returned array to null changes the stack", stack.isEmpty());
+		assertTrue("Setting the returned array to null changes the stack", stack.push(5));
 	}
 
 	private void testShouldBeEqual(Object o1, Object o2) {

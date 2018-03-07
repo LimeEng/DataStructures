@@ -1,6 +1,6 @@
 package stack;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -205,6 +205,14 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	}
 
 	@Test
+	public final void testPushPartiallyNullCollection() {
+		List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, null, null, 6, 7, 8));
+		boolean changed = stack.push(list);
+		assertTrue("Wrong return value", changed);
+		assertEquals("Incorrect size when pushing collection", list.size() - 2, stack.size());
+	}
+
+	@Test
 	public final void testPushNullCollection() {
 		List<Integer> list = null;
 		boolean changed = stack.push(list);
@@ -226,6 +234,14 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		boolean changed = stack.addAll(list);
 		assertTrue("Adding an empty list indicates that something changed", changed);
 		assertEquals("Incorrect size when adding collection", list.size(), stack.size());
+	}
+
+	@Test
+	public final void testAddPartiallyNullCollection() {
+		List<Integer> list = new ArrayList<>(Arrays.asList(1, 2, 3, null, null, 6, 7, 8));
+		boolean changed = stack.addAll(list);
+		assertTrue("Wrong return value", changed);
+		assertEquals("Incorrect size when pushing collection", list.size() - 2, stack.size());
 	}
 
 	@Test
@@ -518,7 +534,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(4, 3, 2, 1, 0));
-		assertEquals("Removing null modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Removing null modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -530,7 +546,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 4, 3, 2, 1, 0));
-		assertEquals("Removing a valid value modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Removing a valid value modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -542,7 +558,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
-		assertEquals("Removing an invalid value modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Removing an invalid value modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -554,7 +570,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
-		assertEquals("Passing a null collection to removeAll modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Passing a null collection to removeAll modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -567,7 +583,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 7, 6, 0));
-		assertEquals("Passing a collection to removeAll modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Passing a collection to removeAll modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -580,7 +596,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
-		assertEquals("Passing an empty collection to removeAll modifes the stack in an incorrect way", expected,
+		assertEquals("Passing an empty collection to removeAll modifies the stack in an incorrect way", expected,
 				actual);
 	}
 
@@ -594,7 +610,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 0));
-		assertEquals("Passing a collection to removeAll modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Passing a collection to removeAll modifies the stack in an incorrect way", expected, actual);
 	}
 
 	@Test
@@ -607,7 +623,76 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 		List<Integer> actual = stack.popWhile(e -> true);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
-		assertEquals("Passing a collection to removeAll modifes the stack in an incorrect way", expected, actual);
+		assertEquals("Passing a collection to removeAll modifies the stack in an incorrect way", expected, actual);
+	}
+
+	@Test
+	public final void testRetainAllNullCollection() {
+		fillStack(10);
+		boolean modified = stack.retainAll(null);
+		assertFalse("Incorrect return value", modified);
+		assertEquals("The size of the stack is not correct", 10, stack.size());
+
+		List<Integer> actual = stack.popWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		assertEquals("Passing null to retainAll modifies the stack in an incorrect way", expected, actual);
+	}
+
+	@Test
+	public final void testRetainAllCollectionWithNulls() {
+		fillStack(10);
+		List<Integer> values = new ArrayList<>(Arrays.asList(15, null, null, null, 16, 17));
+		boolean modified = stack.retainAll(values);
+		assertTrue("Incorrect return value", modified);
+		assertTrue("The size of the stack is not correct", stack.isEmpty());
+
+		List<Integer> actual = stack.popWhile(e -> true);
+		List<Integer> expected = new ArrayList<>();
+		assertEquals("Passing a collection with nulls to retainAll modifies the stack in an incorrect way", expected,
+				actual);
+	}
+
+	@Test
+	public final void testRetainAllNoneMatching() {
+		fillStack(10);
+		List<Integer> values = new ArrayList<>(Arrays.asList(20, 19, 18, 17, 16, 15, 14, 13, 12, 11));
+		boolean modified = stack.retainAll(values);
+		assertTrue("Incorrect return value", modified);
+		assertTrue("The size of the stack is not correct", stack.isEmpty());
+
+		List<Integer> actual = stack.popWhile(e -> true);
+		List<Integer> expected = new ArrayList<>();
+		assertEquals(
+				"Passing a collection with only values that are not present on the stack, to retainAll modifies the stack in an incorrect way",
+				expected, actual);
+	}
+
+	@Test
+	public final void testRetainAllSomeMatching() {
+		fillStack(10);
+		List<Integer> values = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 3, 3, 4, 5, 15, 16, 176));
+		boolean modified = stack.retainAll(values);
+		assertTrue("Incorrect return value", modified);
+		assertEquals("The size of the stack is not correct", 6, stack.size());
+
+		List<Integer> actual = stack.popWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(5, 4, 3, 2, 1, 0));
+		assertEquals("retainAll does not behave as expected, because it modifies the stack in an incorrect way",
+				expected, actual);
+	}
+
+	@Test
+	public final void testPrettyStringEmptyStack() {
+		String string = stack.getPrettyString();
+		assertEquals("The pretty string returned from an empty stack is malformed", "[]", string);
+	}
+
+	@Test
+	public final void testPrettyStringFilledStack() {
+		fillStack(10);
+		String string = stack.getPrettyString();
+		assertEquals("The pretty string returned from an empty stack is malformed", "[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]",
+				string);
 	}
 
 	@Test
@@ -616,7 +701,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		Stack<Integer> s2 = createInstance();
 		testShouldBeEqual(s1, s2);
 	}
-	
+
 	@Test
 	public final void testEqualsFilledStacksReturnsTrue() {
 		Stack<Integer> s1 = createInstance();
@@ -625,7 +710,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		fillStack(s2, 10);
 		testShouldBeEqual(s1, s2);
 	}
-	
+
 	@Test
 	public final void testEqualsFilledStacksReturnsFalse() {
 		Stack<Integer> s1 = createInstance();
@@ -634,7 +719,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		fillStack(s2, 15);
 		testShouldNotBeEqual(s1, s2);
 	}
-	
+
 	@Test
 	public final void testEqualsFilledStacksReturnsFalse2() {
 		Stack<Integer> s1 = createInstance();
@@ -647,6 +732,71 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		testShouldNotBeEqual(s1, s2);
 	}
 
+	@Test
+	public final void testToArrayEmptyStack() {
+		Object[] array = stack.toArray();
+		assertEquals("Created array does not have the correct length", stack.size(), array.length);
+		array = null;
+		assertTrue("Setting the returned array to null changes the stack", stack.isEmpty());
+		assertTrue("Setting the returned array to null changes the stack", stack.push(5));
+	}
+
+	@Test
+	public final void testToArrayFilledStack() {
+		fillStack(10);
+		Object[] array = stack.toArray();
+		assertEquals("Created array does not have the correct length", stack.size(), array.length);
+
+		List<Integer> expected = stack.peekWhile(e -> true);
+		assertArrayEquals("The returned array is malformed", expected.toArray(), array);
+
+		array[0] = 100;
+		assertNotEquals("Modifying the returned array modifies the stack aswell", array[0], stack.peek());
+
+		array = null;
+		assertFalse("Setting the returned array to null changes the stack", stack.isEmpty());
+		assertTrue("Setting the returned array to null changes the stack", stack.push(5));
+	}
+
+	@Test
+	public final void testToArrayWithTypeEmptyStack() {
+		Integer[] a = new Integer[0];
+		Integer[] array = stack.toArray(a);
+		assertEquals("Incorrect array size", 0, array.length);
+	}
+
+	@Test
+	public final void testToArrayWithTypeFilledStackAndBiggerStartArray() {
+		fillStack(10);
+		Integer[] a = new Integer[20];
+		Integer[] array = stack.toArray(a);
+		assertEquals("Incorrect array size", 20, array.length);
+		assertEquals("The stack was modified when creating a new array", 10, stack.size());
+		
+		array[0] = 100;
+		assertNotEquals("Modifying the returned array modifies the stack aswell", array[0], stack.peek());
+		
+		array = null;
+		assertFalse("Setting the returned array to null changes the stack", stack.isEmpty());
+		assertTrue("Setting the returned array to null changes the stack", stack.push(5));
+	}
+
+	@Test
+	public final void testToArrayWithTypeFilledStackAndSmallerStartArray() {
+		fillStack(10);
+		Integer[] a = new Integer[5];
+		Integer[] array = stack.toArray(a);
+		assertEquals("Incorrect array size", 10, array.length);
+		assertEquals("The stack was modified when creating a new array", 10, stack.size());
+		
+		array[0] = 100;
+		assertNotEquals("Modifying the returned array modifies the stack aswell", array[0], stack.peek());
+		
+		array = null;
+		assertFalse("Setting the returned array to null changes the stack", stack.isEmpty());
+		assertTrue("Setting the returned array to null changes the stack", stack.push(5));
+	}
+
 	private void testShouldBeEqual(Object o1, Object o2) {
 		assertTrue("According to equals(), the object is not equal to itself", o1.equals(o1));
 		assertTrue("According to equals(), the object is not equal to itself", o2.equals(o2));
@@ -656,7 +806,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		assertFalse("According to equals(), the object is equal to null", o2.equals(null));
 		assertEquals("The two hash codes are not equal", o1.hashCode(), o2.hashCode());
 	}
-	
+
 	private void testShouldNotBeEqual(Object o1, Object o2) {
 		assertTrue("According to equals(), the object is not equal to itself", o1.equals(o1));
 		assertTrue("According to equals(), the object is not equal to itself", o2.equals(o2));

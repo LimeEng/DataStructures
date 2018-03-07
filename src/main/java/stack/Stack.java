@@ -336,6 +336,24 @@ public interface Stack<T> extends Collection<T> {
 		return changed;
 	}
 
+	/**
+	 * Removes from this list all of its elements that are contained in the
+	 * specified collection.
+	 *
+	 * @param c
+	 *            collection containing elements to be removed from this list
+	 * @return {@code true} if this list changed as a result of the call
+	 * @throws ClassCastException
+	 *             if the class of an element of this list is incompatible with
+	 *             the specified collection (<a href=
+	 *             "Collection.html#optional-restrictions">optional</a>)
+	 * @throws NullPointerException
+	 *             if this list contains a null element and the specified
+	 *             collection does not permit null elements (<a href=
+	 *             "Collection.html#optional-restrictions">optional</a>), or if
+	 *             the specified collection is null
+	 * @see Collection#contains(Object)
+	 */
 	@Override
 	default boolean removeAll(Collection<?> c) {
 		if (c == null) {
@@ -353,6 +371,25 @@ public interface Stack<T> extends Collection<T> {
 		return changed;
 	}
 
+	/**
+	 * Retains only the elements in this list that are contained in the
+	 * specified collection. In other words, removes from this list all of its
+	 * elements that are not contained in the specified collection.
+	 *
+	 * @param c
+	 *            collection containing elements to be retained in this list
+	 * @return {@code true} if this list changed as a result of the call
+	 * @throws ClassCastException
+	 *             if the class of an element of this list is incompatible with
+	 *             the specified collection (<a href=
+	 *             "Collection.html#optional-restrictions">optional</a>)
+	 * @throws NullPointerException
+	 *             if this list contains a null element and the specified
+	 *             collection does not permit null elements (<a href=
+	 *             "Collection.html#optional-restrictions">optional</a>), or if
+	 *             the specified collection is null
+	 * @see Collection#contains(Object)
+	 */
 	@Override
 	default boolean retainAll(Collection<?> c) {
 		if (c == null) {
@@ -391,18 +428,29 @@ public interface Stack<T> extends Collection<T> {
 	}
 
 	/**
-	 * Returns an array containing all of the elements in this collection; the
-	 * runtime type of the returned array is that of the specified array. If the
-	 * collection fits in the specified array, it is returned therein.
-	 * Otherwise, a new array is allocated with the runtime type of the
-	 * specified array and the size of this collection.
-	 * 
+	 * Returns an array containing all of the elements in this list in proper
+	 * sequence (from first to last element); the runtime type of the returned
+	 * array is that of the specified array. If the list fits in the specified
+	 * array, it is returned therein. Otherwise, a new array is allocated with
+	 * the runtime type of the specified array and the size of this list.
+	 *
+	 * <p>
+	 * If the list fits in the specified array with room to spare (i.e., the
+	 * array has more elements than the list), the element in the array
+	 * immediately following the end of the collection is set to <tt>null</tt>.
+	 * (This is useful in determining the length of the list <i>only</i> if the
+	 * caller knows that the list does not contain any null elements.)
+	 *
 	 * @param a
-	 *            - the array into which the elements of this collection are to
-	 *            be stored, if it is big enough; otherwise, a new array of the
+	 *            the array into which the elements of the list are to be
+	 *            stored, if it is big enough; otherwise, a new array of the
 	 *            same runtime type is allocated for this purpose.
-	 * 
-	 * @return an array containing all of the elements in this collection.
+	 * @return an array containing the elements of the list
+	 * @throws ArrayStoreException
+	 *             if the runtime type of the specified array is not a supertype
+	 *             of the runtime type of every element in this list
+	 * @throws NullPointerException
+	 *             if the specified array is null
 	 */
 	@SuppressWarnings("unchecked")
 	@Override

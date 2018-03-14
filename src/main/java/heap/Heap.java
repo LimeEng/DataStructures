@@ -1,6 +1,6 @@
 package heap;
 
-public interface Heap<T extends Comparable<? super T>> {
+public interface Heap<T> {
 
 	boolean offer(T t);
 

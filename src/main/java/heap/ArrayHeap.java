@@ -9,14 +9,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class ArrayHeap<T extends Comparable<? super T>> implements Heap<T> {
+public class ArrayHeap<T> implements Heap<T> {
 
 	private final List<T> contents;
 	private final Comparator<T> comp;
 	private final int order;
 
 	public ArrayHeap(int order) {
-		this(order, (arg0, arg1) -> arg0.compareTo(arg1));
+		this(order, (arg0, arg1) -> ((Comparable<? super T>) arg0).compareTo((T) arg1));
 	}
 
 	public ArrayHeap(int order, Comparator<T> comp) {
@@ -75,7 +75,7 @@ public class ArrayHeap<T extends Comparable<? super T>> implements Heap<T> {
 
 		while (parentPos >= 0) {
 			T parent = contents.get(parentPos);
-			if (element.compareTo(parent) < 0) {
+			if (comp.compare(element, parent) < 0) {
 				swap(index, parentPos);
 				// contents.set(index, parent);
 				index = parentPos;
@@ -91,7 +91,7 @@ public class ArrayHeap<T extends Comparable<? super T>> implements Heap<T> {
 		while (index < size()) {
 			T element = contents.get(index);
 			int biggestChild = getBiggestChildOf(index);
-			if (element.compareTo(contents.get(biggestChild)) > 0) {
+			if (comp.compare(element, contents.get(biggestChild)) > 0) {
 				swap(index, biggestChild);
 			} else {
 				break;

@@ -52,9 +52,13 @@ public class ArrayHeap<T> implements Heap<T> {
 			throw new NoSuchElementException("Heap underflow");
 		}
 
-		T previousRoot = setRoot(getLast());
+		T previousRoot = setRoot(removeLast());
 		siftDown(0);
 		return previousRoot;
+	}
+
+	private T removeLast() {
+		return contents.remove(contents.size() - 1);
 	}
 
 	private T getLast() {
@@ -120,10 +124,9 @@ public class ArrayHeap<T> implements Heap<T> {
 	}
 
 	private int getBiggestChildOf(int index) {
-		Optional<Integer> child = getIndexChildrenOf(index).stream()
-				.max((arg0, arg1) -> {
-					return comp.compare(contents.get(arg0), contents.get(arg1));
-				});
+		Optional<Integer> child = getIndexChildrenOf(index).stream().max((arg0, arg1) -> {
+			return comp.compare(contents.get(arg0), contents.get(arg1));
+		});
 		return child.get();
 	}
 

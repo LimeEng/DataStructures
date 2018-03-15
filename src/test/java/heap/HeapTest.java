@@ -1,8 +1,13 @@
 package heap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.junit.After;
 import org.junit.Before;
@@ -54,5 +59,13 @@ public abstract class HeapTest<T extends Heap<Integer>> {
 		boolean success = heap.offer(null);
 		assertFalse("Wrong success indication", success);
 		assertEquals("Size update incorrectly", 10, heap.size());
+	}
+
+	@Test
+	public void testBasicPeek() {
+		IntStream.range(0, 10).forEach(heap::offer);
+		List<Integer> peeked = Stream.generate(() -> heap.peek()).limit(100).collect(Collectors.toList());
+		assertEquals("Peek returns wrong value", 0, (int) peeked.get(0));
+		assertEquals("Peek multiple times returns different values", 1, peeked.stream().distinct().count());
 	}
 }

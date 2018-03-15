@@ -93,15 +93,29 @@ public class ArrayHeap<T> implements Heap<T> {
 
 	private void siftDown(int index) {
 		while (index < size()) {
-			T element = contents.get(index);
-			int biggestChild = getBiggestChildOf(index);
-			if (comp.compare(element, contents.get(biggestChild)) > 0) {
-				swap(index, biggestChild);
-			} else {
-				break;
+			if (hasAtLeastOneChild(index)) {
+				T element = contents.get(index);
+				int smallestChild = getSmallestChildOf(index);
+				if (comp.compare(element, contents.get(smallestChild)) > 0) {
+					swap(index, smallestChild);
+				} else {
+					break;
+				}
 			}
 		}
 	}
+
+	// private void siftDown(int index) {
+	// while (index < size()) {
+	// T element = contents.get(index);
+	// int biggestChild = getSmallestChildOf(index);
+	// if (comp.compare(element, contents.get(biggestChild)) > 0) {
+	// swap(index, biggestChild);
+	// } else {
+	// break;
+	// }
+	// }
+	// }
 
 	private void swap(int i, int j) {
 		Collections.swap(contents, i, j);
@@ -123,16 +137,24 @@ public class ArrayHeap<T> implements Heap<T> {
 				.collect(Collectors.toList());
 	}
 
-	private int getBiggestChildOf(int index) {
-		Optional<Integer> child = getIndexChildrenOf(index).stream().max((arg0, arg1) -> {
+	private int getSmallestChildOf(int index) {
+		Optional<Integer> child = getIndexChildrenOf(index).stream().min((arg0, arg1) -> {
 			return comp.compare(contents.get(arg0), contents.get(arg1));
 		});
 		return child.get();
 	}
 
+	private boolean hasAtLeastOneChild(int index) {
+		return getChild(index, 0) < size();
+	}
+
 	private int getParent(int index) {
 		return (index - 1) / order;
 	}
+
+	// private boolean hasChild(int index, int number) {
+	// return getChild(index, number) < size();
+	// }
 
 	// When number == 0, the index of the first child is returned.
 	private int getChild(int index, int number) {

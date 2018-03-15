@@ -1,7 +1,9 @@
 package stack;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
@@ -10,6 +12,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.IntStream;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -321,8 +325,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testIteratorEmptyStackHasNext() {
-		boolean hasNext = stack.iterator()
-				.hasNext();
+		boolean hasNext = stack.iterator().hasNext();
 		assertTrue("iterator().hasNext() returning wrong value for empty stack", false == hasNext);
 	}
 
@@ -330,8 +333,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	public final void testIteratorFilledStackHasNext() {
 		stack.push(3);
 		stack.push(5);
-		boolean hasNext = stack.iterator()
-				.hasNext();
+		boolean hasNext = stack.iterator().hasNext();
 		assertTrue("iterator().hasNext() returning wrong value for filled stack", true == hasNext);
 	}
 
@@ -339,8 +341,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	public final void testIteratorEmptyStackNext() {
 		boolean thrown = false;
 		try {
-			stack.iterator()
-					.next();
+			stack.iterator().next();
 		} catch (NoSuchElementException e) {
 			thrown = true;
 		}
@@ -351,8 +352,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	public final void testIteratorFilledStackNext() {
 		stack.push(3);
 		stack.push(5);
-		int i = stack.iterator()
-				.next();
+		int i = stack.iterator().next();
 		assertTrue("iterator().next() returning wrong value", i == 5);
 	}
 
@@ -772,10 +772,10 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		Integer[] array = stack.toArray(a);
 		assertEquals("Incorrect array size", 20, array.length);
 		assertEquals("The stack was modified when creating a new array", 10, stack.size());
-		
+
 		array[0] = 100;
 		assertNotEquals("Modifying the returned array modifies the stack aswell", array[0], stack.peek());
-		
+
 		array = null;
 		assertFalse("Setting the returned array to null changes the stack", stack.isEmpty());
 		assertTrue("Setting the returned array to null changes the stack", stack.push(5));
@@ -788,10 +788,10 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		Integer[] array = stack.toArray(a);
 		assertEquals("Incorrect array size", 10, array.length);
 		assertEquals("The stack was modified when creating a new array", 10, stack.size());
-		
+
 		array[0] = 100;
 		assertNotEquals("Modifying the returned array modifies the stack aswell", array[0], stack.peek());
-		
+
 		array = null;
 		assertFalse("Setting the returned array to null changes the stack", stack.isEmpty());
 		assertTrue("Setting the returned array to null changes the stack", stack.push(5));
@@ -817,9 +817,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	}
 
 	private void fillStack(Stack<Integer> stack, int min, int max) {
-		for (int i = min; i < max; i++) {
-			stack.push(i);
-		}
+		IntStream.range(min, max).forEach(stack::push);
 	}
 
 	private void fillStack(Stack<Integer> stack, int limit) {
@@ -827,9 +825,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	}
 
 	private void fillStack(int min, int max) {
-		for (int i = min; i < max; i++) {
-			stack.push(i);
-		}
+		fillStack(stack, min, max);
 	}
 
 	private void fillStack(int limit) {

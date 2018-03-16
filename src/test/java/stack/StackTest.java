@@ -8,8 +8,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.IntStream;
@@ -23,6 +26,8 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	protected T stack;
 
 	protected abstract T createInstance();
+	
+	protected abstract T createInstance(Collection<Integer> c);
 
 	@Before
 	public void setUp() {
@@ -693,6 +698,45 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		String string = stack.getPrettyString();
 		assertEquals("The pretty string returned from an empty stack is malformed", "[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]",
 				string);
+	}
+	
+	@Test
+	public void testConstructorWithNullCollection() {
+		Stack<Integer> stack = null;
+		boolean exceptionThrown = false;
+		try {
+			stack = createInstance(null);
+			stack.push(1);
+			stack.pop();
+		} catch (Exception e) {
+			exceptionThrown = true;
+		}
+		assertFalse("An exception was thrown when working with a null-initalized stack", exceptionThrown);
+		assertEquals("Size is not updated correctly", 0, stack.size());
+		assertTrue("isEmpty does not work correctly", stack.isEmpty());
+	}
+
+	@Test
+	public void testConstructorWithFilledCollection() {
+		List<Integer> list = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+		Stack<Integer> stack = createInstance(list);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		Collections.reverse(list);
+		assertEquals("The stack is not initalized correctly", list, contents);
+		list.clear();
+		assertFalse("The stack can be affected externally", stack.isEmpty());
+	}
+
+	@Test
+	public void testConstructorWithPartiallyNullCollection() {
+		List<Integer> list = new ArrayList<>(Arrays.asList(0, 1, 2, 3, null, null, 6, 7, 8, 9));
+		Stack<Integer> stack = createInstance(list);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		list.removeIf(Objects::isNull);
+		Collections.reverse(list);
+		assertEquals("The stack is not initalized correctly", list, contents);
+		list.clear();
+		assertFalse("The stack can be affected externally", stack.isEmpty());
 	}
 
 	@Test

@@ -234,20 +234,9 @@ public interface Stack<T> extends Collection<T> {
 		if (c == null) {
 			return false;
 		}
-		// c.stream()
-		// .map(this::push)
-		// .reduce(false, (a, b) -> Boolean.logicalOr(a, b));
-		// TODO: Transform into a, preferably, stream based solution, like the
-		// one above.
-		boolean changed = false;
-		Iterator<? extends T> iter = c.iterator();
-		while (iter.hasNext()) {
-			boolean change = push(iter.next());
-			if (change) {
-				changed = change;
-			}
-		}
-		return changed;
+		return c.stream()
+				.map(this::push)
+				.reduce(false, (a, b) -> a | b);
 	}
 
 	/**

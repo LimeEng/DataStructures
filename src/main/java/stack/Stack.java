@@ -119,8 +119,8 @@ public interface Stack<T> extends Collection<T> {
 	 * @return true if the stack changed as a result of the call.
 	 */
 	default boolean reverse(int inclusive, int exclusive) {
-		if (exclusive > size() || inclusive < 0 || inclusive > exclusive) {
-			throw new IllegalArgumentException("Illegal bounds");
+		if (inclusive < 0 || inclusive > exclusive || exclusive > size()) {
+			return false;
 		}
 		int elementsToReverse = exclusive - inclusive;
 		if (elementsToReverse < 2) {

@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class LinkedStack<T> implements Stack<T> {
 
@@ -84,6 +85,17 @@ public class LinkedStack<T> implements Stack<T> {
 	@Override
 	public String toString() {
 		return getPrettyString();
+	}
+
+	@Override
+	public boolean push(Collection<? extends T> c) {
+		if (c == null) {
+			return false;
+		}
+		return c.stream()
+				.filter(Objects::nonNull)
+				.map(contents::add)
+				.reduce(false, (a, b) -> a | b);
 	}
 
 	@Override

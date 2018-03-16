@@ -128,7 +128,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testReverseAllStackWithOneElement() {
-		stack.reverse();
+		stack.push(1);
 		boolean success = stack.reverse();
 		assertFalse("Reversing returns wrong success indicator", success);
 	}
@@ -145,7 +145,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testReverseTopWithEmptyStack() {
-
+		
 	}
 
 	@Test

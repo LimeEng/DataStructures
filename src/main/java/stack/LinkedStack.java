@@ -11,13 +11,13 @@ public class LinkedStack<T> implements Stack<T> {
 
 	protected LinkedList<T> contents;
 
-	public LinkedStack() {
-		this(Collections.emptyList());
+	public LinkedStack(Collection<T> c) {
+		this();
+		push(c);
 	}
 
-	public LinkedStack(Collection<T> c) {
+	public LinkedStack() {
 		this.contents = new LinkedList<>();
-		push(c);
 	}
 
 	@Override

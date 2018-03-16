@@ -5,8 +5,12 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -73,7 +77,7 @@ public abstract class HeapTest<T extends Heap<Integer>> {
 	public void testBasicPeek() {
 		IntStream.range(0, 10)
 				.forEach(heap::offer);
-		List<Integer> peeked = Stream.generate(() -> heap.peek())
+		List<Integer> peeked = Stream.generate(heap::peek)
 				.limit(100)
 				.collect(Collectors.toList());
 		assertEquals("Peek returns wrong value", 0, (int) peeked.get(0));
@@ -105,6 +109,13 @@ public abstract class HeapTest<T extends Heap<Integer>> {
 	}
 
 	@Test
+	public void testOfferAndPollWithRandomNumbers() {
+		boolean success = positiveNumbers(0, 1000).allMatch(heap::offer);
+		assertTrue("Offering a bunch of random numbers fails on some", success);
+		assertEquals("Polling the heap does not work properly", 0, (int) heap.poll());
+	}
+
+	@Test
 	public void testDefaultIsEmpty() {
 		Heap<Integer> heap = new Heap<Integer>() {
 
@@ -133,5 +144,21 @@ public abstract class HeapTest<T extends Heap<Integer>> {
 		assertTrue("Default implementation of isEmpty does not work", heap.isEmpty());
 		heap.offer(5);
 		assertFalse("Default implementation of isEmpty does not work", heap.isEmpty());
+	}
+
+	private IntStream positiveNumbers(int min, int max) {
+		return IntStream.range(min, max)
+				.boxed()
+				.sorted(HeapTest.shuffle())
+				.mapToInt(e -> e);
+	}
+
+	public static <T> Comparator<T> shuffle() {
+		final Map<Object, UUID> uniqueIds = new IdentityHashMap<>();
+		return (e1, e2) -> {
+			final UUID id1 = uniqueIds.computeIfAbsent(e1, k -> UUID.randomUUID());
+			final UUID id2 = uniqueIds.computeIfAbsent(e2, k -> UUID.randomUUID());
+			return id1.compareTo(id2);
+		};
 	}
 }

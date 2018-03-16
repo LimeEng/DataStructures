@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -91,7 +92,7 @@ public abstract class HeapTest<T extends Heap<Integer>> {
 		}
 		assertTrue("No exception thrown for peeking on an empty heap", exceptionThrown);
 	}
-	
+
 	@Test
 	public void testEmptyPoll() {
 		boolean exceptionThrown = false;
@@ -101,5 +102,36 @@ public abstract class HeapTest<T extends Heap<Integer>> {
 			exceptionThrown = true;
 		}
 		assertTrue("No exception thrown for polling on an empty heap", exceptionThrown);
+	}
+
+	@Test
+	public void testDefaultIsEmpty() {
+		Heap<Integer> heap = new Heap<Integer>() {
+
+			private final List<Integer> list = new ArrayList<>();
+
+			@Override
+			public boolean offer(Integer t) {
+				return list.add(t);
+			}
+
+			@Override
+			public Integer poll() {
+				return null;
+			}
+
+			@Override
+			public Integer peek() {
+				return null;
+			}
+
+			@Override
+			public int size() {
+				return list.size();
+			}
+		};
+		assertTrue("Default implementation of isEmpty does not work", heap.isEmpty());
+		heap.offer(5);
+		assertFalse("Default implementation of isEmpty does not work", heap.isEmpty());
 	}
 }

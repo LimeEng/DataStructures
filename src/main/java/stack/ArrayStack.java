@@ -58,11 +58,11 @@ public class ArrayStack<T> implements Stack<T> {
 
 	@Override
 	public boolean reverse(int inclusive, int exclusive) {
-		if (inclusive < 0 || inclusive > exclusive) {
+		if (inclusive < 0 || inclusive > exclusive || exclusive > size()) {
 			return false;
 		}
 		int elementsToReverse = exclusive - inclusive;
-		if (elementsToReverse < 2 || exclusive > size()) {
+		if (elementsToReverse < 2) {
 			return false;
 		}
 		Collections.reverse(contents.subList(contents.size() - exclusive, contents.size() - inclusive));

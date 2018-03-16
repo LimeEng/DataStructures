@@ -119,11 +119,11 @@ public interface Stack<T> extends Collection<T> {
 	 * @return true if the stack changed as a result of the call.
 	 */
 	default boolean reverse(int inclusive, int exclusive) {
-		if (inclusive < 0 || inclusive > exclusive) {
+		if (inclusive < 0 || inclusive > exclusive || exclusive > size()) {
 			return false;
 		}
 		int elementsToReverse = exclusive - inclusive;
-		if (elementsToReverse < 2 || exclusive > size()) {
+		if (elementsToReverse < 2) {
 			return false;
 		}
 		List<T> poppedElements = pop(inclusive);

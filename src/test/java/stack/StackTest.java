@@ -188,37 +188,65 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testReverseWithEmptyStack() {
-
+		boolean success = stack.reverse(0, 10);
+		assertFalse("Reversing with indices returns wrong success indicator", success);
 	}
 
 	@Test
 	public final void testReverseStackWithOneElement() {
-
+		stack.push(1);
+		boolean success = stack.reverse(0, 10);
+		assertFalse("Reversing with indices returns wrong success indicator", success);
 	}
 
 	@Test
 	public final void testReverseWithFilledStack() {
-
+		fillStack(0, 10);
+		boolean success = stack.reverse(3, 7);
+		assertTrue("Reversing with indices returns wrong success indicator", success);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 3, 4, 5, 6, 2, 1, 0));
+		List<Integer> actual = stack.popWhile(e -> true);
+		assertEquals("Reversing with indices does not leave the stack in the correct state", expected, actual);
 	}
 
 	@Test
 	public final void testReverseInclusiveNegative() {
-
+		fillStack(0, 10);
+		boolean success = stack.reverse(-1, 2);
+		assertFalse("Reversing with indices returns wrong success indicator", success);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		List<Integer> actual = stack.popWhile(e -> true);
+		assertEquals("Reversing with indices does not leave the stack in the correct state", expected, actual);
 	}
 
 	@Test
 	public final void testReverseInclusiveBiggerThanExclusive() {
-
+		fillStack(0, 10);
+		boolean success = stack.reverse(4, 2);
+		assertFalse("Reversing with indices returns wrong success indicator", success);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		List<Integer> actual = stack.popWhile(e -> true);
+		assertEquals("Reversing with indices does not leave the stack in the correct state", expected, actual);
 	}
 
 	@Test
 	public final void testReverseExclusiveBiggerThanStack() {
-
+		fillStack(0, 10);
+		boolean success = stack.reverse(0, 20);
+		assertFalse("Reversing with indices returns wrong success indicator", success);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		List<Integer> actual = stack.popWhile(e -> true);
+		assertEquals("Reversing with indices does not leave the stack in the correct state", expected, actual);
 	}
 
 	@Test
 	public final void testReverseEqualInclusiveAndExclusive() {
-
+		fillStack(0, 10);
+		boolean success = stack.reverse(4, 4);
+		assertFalse("Reversing with indices returns wrong success indicator", success);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		List<Integer> actual = stack.popWhile(e -> true);
+		assertEquals("Reversing with indices does not leave the stack in the correct state", expected, actual);
 	}
 
 	@Test

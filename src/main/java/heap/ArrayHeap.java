@@ -61,16 +61,8 @@ public class ArrayHeap<T> implements Heap<T> {
 		return contents.remove(contents.size() - 1);
 	}
 
-	private T getLast() {
-		return contents.get(contents.size() - 1);
-	}
-
 	private T getRoot() {
 		return contents.get(0);
-	}
-
-	private T setRoot(T item) {
-		return contents.set(0, item);
 	}
 
 	private void siftUp(int index) {
@@ -81,14 +73,12 @@ public class ArrayHeap<T> implements Heap<T> {
 			T parent = contents.get(parentPos);
 			if (comp.compare(element, parent) < 0) {
 				swap(index, parentPos);
-				// contents.set(index, parent);
 				index = parentPos;
 				parentPos = getParent(index);
 			} else {
 				break;
 			}
 		}
-		// contents.set(index, element);
 	}
 
 	private void siftDown(int index) {

@@ -100,21 +100,21 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	@Test
 	public final void testSwapWithEmptyStack() {
 		boolean success = stack.swap();
-		assertFalse("Swapping returns wrong value", success);
+		assertFalse("Swapping returns wrong success indicator", success);
 	}
 
 	@Test
 	public final void testSwapStackWithOneElement() {
 		stack.push(1);
 		boolean success = stack.swap();
-		assertFalse("Swapping returns wrong value", success);
+		assertFalse("Swapping returns wrong success indicator", success);
 	}
 
 	@Test
 	public final void testSwapWithFilledStack() {
 		fillStack(0, 10);
 		boolean success = stack.swap();
-		assertTrue("Swapping returns wrong value", success);
+		assertTrue("Swapping returns wrong success indicator", success);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(8, 9, 7, 6, 5, 4, 3, 2, 1, 0));
 		List<Integer> actual = stack.popWhile(e -> true);
 		assertEquals("Swapping does not leave the stack in the correct state", expected, actual);
@@ -122,17 +122,25 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testReverseAllWithEmptyStack() {
-		
+		boolean success = stack.reverse();
+		assertFalse("Reversing returns wrong success indicator", success);
 	}
 
 	@Test
 	public final void testReverseAllStackWithOneElement() {
-
+		stack.reverse();
+		boolean success = stack.reverse();
+		assertFalse("Reversing returns wrong success indicator", success);
 	}
 
 	@Test
 	public final void testReverseAllWithFilledStack() {
-
+		fillStack(0, 10);
+		boolean success = stack.reverse();
+		assertTrue("Reversing returns wrong success indicator", success);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+		List<Integer> actual = stack.popWhile(e -> true);
+		assertEquals("Reversing does not leave the stack in the correct state", expected, actual);
 	}
 
 	@Test

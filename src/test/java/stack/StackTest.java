@@ -26,7 +26,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	protected T stack;
 
 	protected abstract T createInstance();
-	
+
 	protected abstract T createInstance(Collection<Integer> c);
 
 	@Before
@@ -98,38 +98,88 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	}
 
 	@Test
-	public final void emptyReverse() {
-		boolean changed = stack.reverse();
-		assertTrue("Reversing an empty stack should return false", !changed);
+	public final void testSwapWithEmptyStack() {
+
 	}
 
 	@Test
-	public final void oneReverse() {
-		stack.push(1);
-		boolean changed = stack.reverse();
-		assertTrue("Reversing a stack with a single element should return false", !changed);
+	public final void testSwapStackWithOneElement() {
+
 	}
 
 	@Test
-	public final void twoReverse() {
-		stack.push(1);
-		stack.push(2);
-		boolean changed = stack.reverse();
-		assertEquals("Wrong element retrieved", new Integer(1), stack.pop());
-		assertEquals("Wrong element retrieved", new Integer(2), stack.pop());
-		assertTrue("Reversing a stack with two elements should return true", changed);
+	public final void testSwapWithFilledStack() {
+
 	}
 
 	@Test
-	public final void manyReverse() {
-		fillStack(1, 6);
-		boolean changed = stack.reverse();
-		assertEquals("Wrong element retrieved", new Integer(1), stack.pop());
-		assertEquals("Wrong element retrieved", new Integer(2), stack.pop());
-		assertEquals("Wrong element retrieved", new Integer(3), stack.pop());
-		assertEquals("Wrong element retrieved", new Integer(4), stack.pop());
-		assertEquals("Wrong element retrieved", new Integer(5), stack.pop());
-		assertTrue("Reversing a stack with two elements should return true", changed);
+	public final void testReverseAllWithEmptyStack() {
+
+	}
+
+	@Test
+	public final void testReverseAllStackWithOneElement() {
+
+	}
+
+	@Test
+	public final void testReverseAllWithFilledStack() {
+
+	}
+
+	@Test
+	public final void testReverseTopWithEmptyStack() {
+
+	}
+
+	@Test
+	public final void testReverseTopStackWithOneElement() {
+
+	}
+
+	@Test
+	public final void testReverseTopWithFilledStack() {
+
+	}
+
+	@Test
+	public final void testReverseTopWithFilledStackAndNegativeParameter() {
+
+	}
+
+	@Test
+	public final void testReverseTopWithFilledStackAndZeroParameter() {
+
+	}
+
+	@Test
+	public final void testReverseWithEmptyStack() {
+
+	}
+
+	@Test
+	public final void testReverseStackWithOneElement() {
+
+	}
+
+	@Test
+	public final void testReverseWithFilledStack() {
+
+	}
+
+	@Test
+	public final void testReverseInclusiveNegative() {
+
+	}
+
+	@Test
+	public final void testReverseInclusiveBiggerThanExclusive() {
+
+	}
+
+	@Test
+	public final void testReverseExclusiveBiggerThanStack() {
+
 	}
 
 	@Test
@@ -330,7 +380,8 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testIteratorEmptyStackHasNext() {
-		boolean hasNext = stack.iterator().hasNext();
+		boolean hasNext = stack.iterator()
+				.hasNext();
 		assertTrue("iterator().hasNext() returning wrong value for empty stack", false == hasNext);
 	}
 
@@ -338,7 +389,8 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	public final void testIteratorFilledStackHasNext() {
 		stack.push(3);
 		stack.push(5);
-		boolean hasNext = stack.iterator().hasNext();
+		boolean hasNext = stack.iterator()
+				.hasNext();
 		assertTrue("iterator().hasNext() returning wrong value for filled stack", true == hasNext);
 	}
 
@@ -346,7 +398,8 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	public final void testIteratorEmptyStackNext() {
 		boolean thrown = false;
 		try {
-			stack.iterator().next();
+			stack.iterator()
+					.next();
 		} catch (NoSuchElementException e) {
 			thrown = true;
 		}
@@ -357,7 +410,8 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	public final void testIteratorFilledStackNext() {
 		stack.push(3);
 		stack.push(5);
-		int i = stack.iterator().next();
+		int i = stack.iterator()
+				.next();
 		assertTrue("iterator().next() returning wrong value", i == 5);
 	}
 
@@ -699,7 +753,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 		assertEquals("The pretty string returned from an empty stack is malformed", "[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]",
 				string);
 	}
-	
+
 	@Test
 	public void testConstructorWithNullCollection() {
 		Stack<Integer> stack = null;
@@ -861,7 +915,8 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	}
 
 	private void fillStack(Stack<Integer> stack, int min, int max) {
-		IntStream.range(min, max).forEach(stack::push);
+		IntStream.range(min, max)
+				.forEach(stack::push);
 	}
 
 	private void fillStack(Stack<Integer> stack, int limit) {

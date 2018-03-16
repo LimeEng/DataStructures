@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 
 public class ArrayStack<T> implements Stack<T> {
 
@@ -86,6 +87,17 @@ public class ArrayStack<T> implements Stack<T> {
 	@Override
 	public String toString() {
 		return getPrettyString();
+	}
+
+	@Override
+	public boolean push(Collection<? extends T> c) {
+		if (c == null) {
+			return false;
+		}
+		return c.stream()
+				.filter(Objects::nonNull)
+				.map(contents::add)
+				.reduce(false, (a, b) -> a | b);
 	}
 
 	@Override

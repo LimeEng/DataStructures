@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -235,6 +236,7 @@ public interface Stack<T> extends Collection<T> {
 			return false;
 		}
 		return c.stream()
+				.filter(Objects::nonNull)
 				.map(this::push)
 				.reduce(false, (a, b) -> a | b);
 	}

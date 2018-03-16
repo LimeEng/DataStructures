@@ -518,17 +518,9 @@ public interface Stack<T> extends Collection<T> {
 	 * @return a formatted string representing the stack.
 	 */
 	default String getPrettyString() {
-		StringBuilder sb = new StringBuilder();
-		Iterator<T> iter = iterator();
-		sb.append("[");
-		while (iter.hasNext()) {
-			sb.append(iter.next());
-			if (iter.hasNext()) {
-				sb.append(", ");
-			}
-		}
-		sb.append("]");
-		return sb.toString();
+		return this.stream()
+				.map(String::valueOf)
+				.collect(Collectors.joining(", ", "[", "]"));
 	}
 
 	/**

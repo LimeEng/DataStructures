@@ -82,16 +82,12 @@ public class ArrayHeap<T> implements Heap<T> {
 	}
 
 	private void siftDown(int index) {
-		while (index < size()) {
-			if (hasAtLeastOneChild(index)) {
-				T element = contents.get(index);
-				int smallestChild = getSmallestChildOf(index);
-				if (comp.compare(element, contents.get(smallestChild)) > 0) {
-					swap(index, smallestChild);
-					index = smallestChild;
-				} else {
-					break;
-				}
+		while (hasAtLeastOneChild(index)) {
+			T element = contents.get(index);
+			int smallestChild = getSmallestChildOf(index);
+			if (comp.compare(element, contents.get(smallestChild)) > 0) {
+				swap(index, smallestChild);
+				index = smallestChild;
 			} else {
 				break;
 			}

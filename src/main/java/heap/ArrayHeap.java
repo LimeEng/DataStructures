@@ -51,8 +51,8 @@ public class ArrayHeap<T> implements Heap<T> {
 		if (isEmpty()) {
 			throw new NoSuchElementException("Heap underflow");
 		}
-
-		T previousRoot = setRoot(removeLast());
+		swap(0, contents.size() - 1);
+		T previousRoot = removeLast();
 		siftDown(0);
 		return previousRoot;
 	}
@@ -98,9 +98,12 @@ public class ArrayHeap<T> implements Heap<T> {
 				int smallestChild = getSmallestChildOf(index);
 				if (comp.compare(element, contents.get(smallestChild)) > 0) {
 					swap(index, smallestChild);
+					index = smallestChild;
 				} else {
 					break;
 				}
+			} else {
+				break;
 			}
 		}
 	}
@@ -138,9 +141,10 @@ public class ArrayHeap<T> implements Heap<T> {
 	}
 
 	private int getSmallestChildOf(int index) {
-		Optional<Integer> child = getIndexChildrenOf(index).stream().min((arg0, arg1) -> {
-			return comp.compare(contents.get(arg0), contents.get(arg1));
-		});
+		Optional<Integer> child = getIndexChildrenOf(index).stream()
+				.min((arg0, arg1) -> {
+					return comp.compare(contents.get(arg0), contents.get(arg1));
+				});
 		return child.get();
 	}
 

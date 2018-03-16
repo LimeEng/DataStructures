@@ -4,9 +4,9 @@ public interface Heap<T> {
 
 	boolean offer(T t);
 
-	T peek();
-	
 	T poll();
+	
+	T peek();
 	
 	int size();
 	

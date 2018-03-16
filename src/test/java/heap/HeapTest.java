@@ -5,6 +5,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -42,7 +43,8 @@ public abstract class HeapTest<T extends Heap<Integer>> {
 
 	@Test
 	public void testBasicPoll() {
-		IntStream.range(0, 10).forEach(heap::offer);
+		IntStream.range(0, 10)
+				.forEach(heap::offer);
 		for (int i = 0; i < 10; i++) {
 			assertEquals("Polling does not work correctly", i, (int) heap.poll());
 			assertEquals("Size is not updated correctly", 10 - (i + 1), heap.size());
@@ -55,6 +57,11 @@ public abstract class HeapTest<T extends Heap<Integer>> {
 			boolean success = heap.offer(i);
 			assertTrue("Wrong success indication", success);
 			assertEquals("Size is not updated correctly", i + 1, heap.size());
+			if (i + 1 == 0) {
+				assertTrue("isEmpty returns wrong result", heap.isEmpty());
+			} else {
+				assertFalse("isEmpty returns wrong result", heap.isEmpty());
+			}
 		}
 		boolean success = heap.offer(null);
 		assertFalse("Wrong success indication", success);
@@ -63,9 +70,36 @@ public abstract class HeapTest<T extends Heap<Integer>> {
 
 	@Test
 	public void testBasicPeek() {
-		IntStream.range(0, 10).forEach(heap::offer);
-		List<Integer> peeked = Stream.generate(() -> heap.peek()).limit(100).collect(Collectors.toList());
+		IntStream.range(0, 10)
+				.forEach(heap::offer);
+		List<Integer> peeked = Stream.generate(() -> heap.peek())
+				.limit(100)
+				.collect(Collectors.toList());
 		assertEquals("Peek returns wrong value", 0, (int) peeked.get(0));
-		assertEquals("Peek multiple times returns different values", 1, peeked.stream().distinct().count());
+		assertEquals("Peek multiple times returns different values", 1, peeked.stream()
+				.distinct()
+				.count());
+	}
+
+	@Test
+	public void testEmptyPeek() {
+		boolean exceptionThrown = false;
+		try {
+			heap.peek();
+		} catch (NoSuchElementException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("No exception thrown for peeking on an empty heap", exceptionThrown);
+	}
+	
+	@Test
+	public void testEmptyPoll() {
+		boolean exceptionThrown = false;
+		try {
+			heap.poll();
+		} catch (NoSuchElementException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("No exception thrown for polling on an empty heap", exceptionThrown);
 	}
 }

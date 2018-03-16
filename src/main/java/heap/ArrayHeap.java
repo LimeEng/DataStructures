@@ -94,28 +94,8 @@ public class ArrayHeap<T> implements Heap<T> {
 		}
 	}
 
-	// private void siftDown(int index) {
-	// while (index < size()) {
-	// T element = contents.get(index);
-	// int biggestChild = getSmallestChildOf(index);
-	// if (comp.compare(element, contents.get(biggestChild)) > 0) {
-	// swap(index, biggestChild);
-	// } else {
-	// break;
-	// }
-	// }
-	// }
-
 	private void swap(int i, int j) {
 		Collections.swap(contents, i, j);
-	}
-
-	private List<T> getChildrenOf(int index) {
-		return IntStream.range(0, order)
-				.map(e -> getChild(index, e))
-				.filter(e -> e < size())
-				.mapToObj(contents::get)
-				.collect(Collectors.toList());
 	}
 
 	private List<Integer> getIndexChildrenOf(int index) {
@@ -141,10 +121,6 @@ public class ArrayHeap<T> implements Heap<T> {
 	private int getParent(int index) {
 		return (index - 1) / order;
 	}
-
-	// private boolean hasChild(int index, int number) {
-	// return getChild(index, number) < size();
-	// }
 
 	// When number == 0, the index of the first child is returned.
 	private int getChild(int index, int number) {

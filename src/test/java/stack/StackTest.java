@@ -99,22 +99,30 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testSwapWithEmptyStack() {
-
+		boolean success = stack.swap();
+		assertFalse("Swapping returns wrong value", success);
 	}
 
 	@Test
 	public final void testSwapStackWithOneElement() {
-
+		stack.push(1);
+		boolean success = stack.swap();
+		assertFalse("Swapping returns wrong value", success);
 	}
 
 	@Test
 	public final void testSwapWithFilledStack() {
-
+		fillStack(0, 10);
+		boolean success = stack.swap();
+		assertTrue("Swapping returns wrong value", success);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(8, 9, 7, 6, 5, 4, 3, 2, 1, 0));
+		List<Integer> actual = stack.popWhile(e -> true);
+		assertEquals("Swapping does not leave the stack in the correct state", expected, actual);
 	}
 
 	@Test
 	public final void testReverseAllWithEmptyStack() {
-
+		
 	}
 
 	@Test
@@ -179,6 +187,11 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testReverseExclusiveBiggerThanStack() {
+
+	}
+
+	@Test
+	public final void testReverseEqualInclusiveAndExclusive() {
 
 	}
 

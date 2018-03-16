@@ -42,7 +42,8 @@ public interface Stack<T> extends Collection<T> {
 	T pop();
 
 	/**
-	 * Returns true if the stack has reached maximum capacity.
+	 * Returns true if the stack has reached maximum capacity. Many
+	 * implementations always return false.
 	 * 
 	 * @return true if the stack has reached maximum capacity.
 	 */
@@ -52,7 +53,7 @@ public interface Stack<T> extends Collection<T> {
 	 * Rotates the entire stack by the specified amount.
 	 * 
 	 * @param shift
-	 *            - the distance to rotate the list. There are no constraints on
+	 *            the distance to rotate the stack. There are no constraints on
 	 *            this value; it may be zero, negative, or greater than
 	 *            stack.size().
 	 * @return true if the stack changed as a result of the call.
@@ -66,9 +67,9 @@ public interface Stack<T> extends Collection<T> {
 	 * top of the stack is treated as index 0.
 	 * 
 	 * @param exclusive
-	 *            - how many elements that will be affected.
+	 *            how many elements that will be affected.
 	 * @param shift
-	 *            - the distance to rotate the list. There are no constraints on
+	 *            the distance to rotate the stack. There are no constraints on
 	 *            this value; it may be zero, negative, or greater than
 	 *            stack.size().
 	 * @return true if the stack changed as a result of the call.
@@ -83,11 +84,11 @@ public interface Stack<T> extends Collection<T> {
 	 * stack is treated as index 0.
 	 * 
 	 * @param inclusive
-	 *            - The starting index of the rotation operation.
+	 *            the starting index of the rotation operation.
 	 * @param exclusive
-	 *            - the end index of the rotation operation.
+	 *            the end index of the rotation operation.
 	 * @param shift
-	 *            - the distance to rotate the list. There are no constraints on
+	 *            the distance to rotate the stack. There are no constraints on
 	 *            this value; it may be zero, negative, or greater than
 	 *            stack.size().
 	 * @return true if the stack changed as a result of the call.
@@ -106,6 +107,17 @@ public interface Stack<T> extends Collection<T> {
 		return true;
 	}
 
+	/**
+	 * Reverses the stack from the specified starting index (inclusive) to the
+	 * specified end index (exclusive). The top of the stack is treated as index
+	 * 0.
+	 * 
+	 * @param inclusive
+	 *            the starting index of the reversing operation.
+	 * @param exclusive
+	 *            the end index of the reversing operation.
+	 * @return true if the stack changed as a result of the call.
+	 */
 	default boolean reverse(int inclusive, int exclusive) {
 		if (exclusive > size() || inclusive < 0 || inclusive > exclusive) {
 			throw new IllegalArgumentException("Illegal bounds");
@@ -123,6 +135,14 @@ public interface Stack<T> extends Collection<T> {
 		return true;
 	}
 
+	/**
+	 * Reverses from the top of the stack to the specified index (exclusive).
+	 * The top of the stack is treated as index 0.
+	 * 
+	 * @param exclusive
+	 *            how many elements that will be affected.
+	 * @return true if the stack changed as a result of the call.
+	 */
 	default boolean reverseTop(int exclusive) {
 		return reverse(0, exclusive);
 	}
@@ -153,7 +173,7 @@ public interface Stack<T> extends Collection<T> {
 	 * value was not found.
 	 * 
 	 * @param predicate
-	 *            - the predicate that is used to test the elements.
+	 *            the predicate that is used to test the elements.
 	 * @return an Optional<Integer> describing the depth from the top.
 	 */
 	default Optional<Integer> search(Predicate<? super T> predicate) {
@@ -172,10 +192,11 @@ public interface Stack<T> extends Collection<T> {
 
 	/**
 	 * Pops off (at most) k elements from the stack and returns the result as a
-	 * list. Will not throw exceptions.
+	 * list. The returned list will be "safe" in that no references to it are
+	 * maintained by this stack. Will not throw exceptions.
 	 * 
 	 * @param k
-	 *            - the maximum amount of objects to pop off the stack.
+	 *            the maximum amount of objects to pop off the stack.
 	 * @return a list containing at most k objects.
 	 */
 	default List<T> pop(int k) {
@@ -189,7 +210,17 @@ public interface Stack<T> extends Collection<T> {
 		return list;
 	}
 
-	// TODO: Test and in JDK 9 convert to stream (takeWhile)
+	/**
+	 * Pops off items as long as the value on top matches the predicate, and
+	 * populates a list with these values. Once a value does not match the
+	 * predicate the list will be returned. The returned list will be "safe" in
+	 * that no references to it are maintained by this stack. A null predicate
+	 * will return an empty list.
+	 * 
+	 * @param pred
+	 *            the predicate used to determine if a value should be returned
+	 * @return a list containing the peeked values.
+	 */
 	default List<T> popWhile(Predicate<T> pred) {
 		if (pred == null) {
 			return new ArrayList<>();
@@ -205,7 +236,17 @@ public interface Stack<T> extends Collection<T> {
 		return poppedValues;
 	}
 
-	// TODO: Test
+	/**
+	 * Goes through the stack top to bottom and populates a list with values
+	 * that matches the predicate. Once a value does not match the predicate the
+	 * list will be returned. The returned list will be "safe" in that no
+	 * references to it are maintained by this stack. A null predicate will
+	 * return an empty list. The stack will be unchanged after this call.
+	 * 
+	 * @param pred
+	 *            the predicate used to determine if a value should be returned
+	 * @return a list containing the peeked values.
+	 */
 	default List<T> peekWhile(Predicate<T> pred) {
 		if (pred == null) {
 			return new ArrayList<>();
@@ -228,7 +269,7 @@ public interface Stack<T> extends Collection<T> {
 	 * Behaves as if individual values are pushed.
 	 * 
 	 * @param c
-	 *            - the collection to add.
+	 *            the collection to add.
 	 * @return true if the stack changed as a result of the call.
 	 */
 	default boolean push(Collection<? extends T> c) {
@@ -244,10 +285,12 @@ public interface Stack<T> extends Collection<T> {
 	/**
 	 * 
 	 * Collects (at most) k elements from the stack and returns the result as a
-	 * list. The stack is unchanged after the call. Will not throw exceptions.
+	 * list. The returned list will be "safe" in that no references to it are
+	 * maintained by this stack. The stack is unchanged after the call. Will not
+	 * throw exceptions.
 	 * 
 	 * @param k
-	 *            - the maximum amount of objects to retrieve from the stack.
+	 *            the maximum amount of objects to retrieve from the stack.
 	 * @return a list containing at most k objects.
 	 */
 	default List<T> peek(int k) {
@@ -262,7 +305,7 @@ public interface Stack<T> extends Collection<T> {
 	 * Identical to push(e).
 	 * 
 	 * @param e
-	 *            - the element to add.
+	 *            the element to add.
 	 * @return true if the stack changed as a result of the call.
 	 */
 	@Override
@@ -274,7 +317,7 @@ public interface Stack<T> extends Collection<T> {
 	 * Identical to push(c).
 	 * 
 	 * @param c
-	 *            - the collection to add.
+	 *            the collection to add.
 	 * @return true if the stack changed as a result of the call.
 	 */
 	@Override
@@ -286,7 +329,7 @@ public interface Stack<T> extends Collection<T> {
 	 * Checks if the given object is contained in the stack.
 	 * 
 	 * @param obj
-	 *            - the object to find.
+	 *            the object to find.
 	 * @return true if the stack contains the specified object, i.e if at least
 	 *         one element e returns true for e.equals(obj).
 	 */
@@ -302,9 +345,9 @@ public interface Stack<T> extends Collection<T> {
 	 * Checks if all the elements in the collection are contained in the stack.
 	 * 
 	 * @param c
-	 *            - collection to be checked for containment in this collection.
+	 *            collection to be checked for containment in this collection.
 	 * @return true if at least one element returns true for each object in the
-	 *         collection e.equals(obj).
+	 *         collection.
 	 */
 	@Override
 	default boolean containsAll(Collection<?> c) {
@@ -315,6 +358,20 @@ public interface Stack<T> extends Collection<T> {
 				.allMatch(this::contains);
 	}
 
+	/**
+	 * Removes the first occurrence of the specified element from this stack, if
+	 * it is present. If the stack does not contain the element, it is
+	 * unchanged. More formally, removes the element with the lowest index
+	 * <tt>i</tt> such that
+	 * <tt>(o == null ? get(i) == null : o.equals(get(i)))</tt> (if such an
+	 * element exists). Returns <tt>true</tt> if this stack contained the
+	 * specified element (or equivalently, if this stack changed as a result of
+	 * the call).
+	 *
+	 * @param o
+	 *            element to be removed from this stack, if present
+	 * @return <tt>true</tt> if this list contained the specified element
+	 */
 	@Override
 	default boolean remove(Object o) {
 		if (o == null) {
@@ -328,22 +385,12 @@ public interface Stack<T> extends Collection<T> {
 	}
 
 	/**
-	 * Removes from this list all of its elements that are contained in the
+	 * Removes from this stack all of its elements that are contained in the
 	 * specified collection.
 	 *
 	 * @param c
-	 *            collection containing elements to be removed from this list
-	 * @return {@code true} if this list changed as a result of the call
-	 * @throws ClassCastException
-	 *             if the class of an element of this list is incompatible with
-	 *             the specified collection (<a href=
-	 *             "Collection.html#optional-restrictions">optional</a>)
-	 * @throws NullPointerException
-	 *             if this list contains a null element and the specified
-	 *             collection does not permit null elements (<a href=
-	 *             "Collection.html#optional-restrictions">optional</a>), or if
-	 *             the specified collection is null
-	 * @see Collection#contains(Object)
+	 *            collection containing elements to be removed from this stack
+	 * @return {@code true} if this stack changed as a result of the call
 	 */
 	@Override
 	default boolean removeAll(Collection<?> c) {
@@ -363,23 +410,13 @@ public interface Stack<T> extends Collection<T> {
 	}
 
 	/**
-	 * Retains only the elements in this list that are contained in the
-	 * specified collection. In other words, removes from this list all of its
+	 * Retains only the elements in this stack that are contained in the
+	 * specified collection. In other words, removes from this stack all of its
 	 * elements that are not contained in the specified collection.
 	 *
 	 * @param c
-	 *            collection containing elements to be retained in this list
-	 * @return {@code true} if this list changed as a result of the call
-	 * @throws ClassCastException
-	 *             if the class of an element of this list is incompatible with
-	 *             the specified collection (<a href=
-	 *             "Collection.html#optional-restrictions">optional</a>)
-	 * @throws NullPointerException
-	 *             if this list contains a null element and the specified
-	 *             collection does not permit null elements (<a href=
-	 *             "Collection.html#optional-restrictions">optional</a>), or if
-	 *             the specified collection is null
-	 * @see Collection#contains(Object)
+	 *            collection containing elements to be retained in this stack
+	 * @return {@code true} if this stack changed as a result of the call
 	 */
 	@Override
 	default boolean retainAll(Collection<?> c) {
@@ -404,9 +441,19 @@ public interface Stack<T> extends Collection<T> {
 	}
 
 	/**
-	 * Returns an array containing all of the elements in this collection.
-	 * 
-	 * @return an array containing all of the elements in this collection.
+	 * Returns an array containing all of the elements in this stack in proper
+	 * sequence (from first to last element).
+	 *
+	 * <p>
+	 * The returned array will be "safe" in that no references to it are
+	 * maintained by this stack. (In other words, this method must allocate a
+	 * new array). The caller is thus free to modify the returned array.
+	 *
+	 * <p>
+	 * This method acts as bridge between array-based and collection-based APIs.
+	 *
+	 * @return an array containing all of the elements in this stack in proper
+	 *         sequence
 	 */
 	@Override
 	default Object[] toArray() {
@@ -419,27 +466,27 @@ public interface Stack<T> extends Collection<T> {
 	}
 
 	/**
-	 * Returns an array containing all of the elements in this list in proper
+	 * Returns an array containing all of the elements in this stack in proper
 	 * sequence (from first to last element); the runtime type of the returned
-	 * array is that of the specified array. If the list fits in the specified
+	 * array is that of the specified array. If the stack fits in the specified
 	 * array, it is returned therein. Otherwise, a new array is allocated with
-	 * the runtime type of the specified array and the size of this list.
+	 * the runtime type of the specified array and the size of this stack.
 	 *
 	 * <p>
-	 * If the list fits in the specified array with room to spare (i.e., the
-	 * array has more elements than the list), the element in the array
+	 * If the stack fits in the specified array with room to spare (i.e., the
+	 * array has more elements than the stack), the element in the array
 	 * immediately following the end of the collection is set to <tt>null</tt>.
-	 * (This is useful in determining the length of the list <i>only</i> if the
-	 * caller knows that the list does not contain any null elements.)
+	 * (This is useful in determining the length of the stack <i>only</i> if the
+	 * caller knows that the stack does not contain any null elements.)
 	 *
 	 * @param a
-	 *            the array into which the elements of the list are to be
+	 *            the array into which the elements of the stack are to be
 	 *            stored, if it is big enough; otherwise, a new array of the
 	 *            same runtime type is allocated for this purpose.
-	 * @return an array containing the elements of the list
+	 * @return an array containing the elements of the stack
 	 * @throws ArrayStoreException
 	 *             if the runtime type of the specified array is not a supertype
-	 *             of the runtime type of every element in this list
+	 *             of the runtime type of every element in this stack
 	 * @throws NullPointerException
 	 *             if the specified array is null
 	 */

@@ -397,16 +397,10 @@ public interface Stack<T> extends Collection<T> {
 		if (c == null) {
 			return false;
 		}
-		// TODO: Transform into a, preferably, stream based solution
-		boolean changed = false;
-		Iterator<?> iter = c.iterator();
-		while (iter.hasNext()) {
-			boolean change = remove(iter.next());
-			if (change) {
-				changed = change;
-			}
-		}
-		return changed;
+		return c.stream()
+				.filter(Objects::nonNull)
+				.map(this::remove)
+				.reduce(false, (a, b) -> a | b);
 	}
 
 	/**

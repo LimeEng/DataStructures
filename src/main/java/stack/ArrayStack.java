@@ -1,7 +1,6 @@
 package stack;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -178,7 +177,11 @@ public class ArrayStack<T> implements Stack<T> {
 	}
 
 	private <E> void reverseArray(E[] array) {
-		Collections.reverse(Arrays.asList(array));
+		for (int i = 0; i < array.length / 2; i++) {
+			E temp = array[i];
+			array[i] = array[array.length - i - 1];
+			array[array.length - i - 1] = temp;
+		}
 	}
 
 	@Override

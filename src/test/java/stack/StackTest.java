@@ -98,6 +98,146 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	}
 
 	@Test
+	public final void testRotateAllWithEmptyStack() {
+
+	}
+
+	@Test
+	public final void testRotateAllStackWithOneElement() {
+
+	}
+
+	@Test
+	public final void testRotateAllWithFilledStack() {
+
+	}
+
+	@Test
+	public final void testRotateAllWithFilledStackZeroShift() {
+
+	}
+
+	@Test
+	public final void testRotateAllWithFilledStackNegativeShift() {
+
+	}
+
+	@Test
+	public final void testRotateAllWithFilledStackGreaterThanSizeShift() {
+
+	}
+
+	@Test
+	public final void testRotateTopWithEmptyStack() {
+
+	}
+
+	@Test
+	public final void testRotateTopStackWithOneElement() {
+
+	}
+
+	@Test
+	public final void testRotateTopWithFilledStack() {
+
+	}
+
+	@Test
+	public final void testRotateTopWithFilledStackZeroShift() {
+
+	}
+
+	@Test
+	public final void testRotateTopWithFilledStackNegativeShift() {
+
+	}
+
+	@Test
+	public final void testRotateTopWithFilledStackGreaterThanSizeShift() {
+
+	}
+
+	@Test
+	public final void testRotateTopWithFilledStackNegativeExclusive() {
+
+	}
+
+	@Test
+	public final void testRotateTopWithFilledStackZeroExclusive() {
+
+	}
+
+	@Test
+	public final void testRotateTopWithFilledStackGreaterThanSizeExclusive() {
+
+	}
+
+	@Test
+	public final void testRotateWithEmptyStack() {
+
+	}
+
+	@Test
+	public final void testRotateStackWithOneElement() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStack() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStackZeroShift() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStackNegativeShift() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStackGreaterThanSizeShift() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStackNegativeExclusive() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStackZeroExclusive() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStackGreaterThanSizeExclusive() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStackNegativeInclusive() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStackZeroInclusive() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStackGreaterThanSizeInclusive() {
+
+	}
+
+	@Test
+	public final void testRotateWithFilledStackInclusiveBiggerThanInclusive() {
+
+	}
+
+	@Test
 	public final void testSwapWithEmptyStack() {
 		boolean success = stack.swap();
 		assertFalse("Swapping returns wrong success indicator", success);

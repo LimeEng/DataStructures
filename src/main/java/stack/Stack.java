@@ -120,7 +120,7 @@ public interface Stack<T> extends Collection<T> {
 	 */
 	default boolean reverse(int inclusive, int exclusive) {
 		if (inclusive < 0 || inclusive > exclusive || exclusive > size()) {
-			return false;
+			throw new IllegalArgumentException("Illegal bounds");
 		}
 		int elementsToReverse = exclusive - inclusive;
 		if (elementsToReverse < 2) {
@@ -162,6 +162,9 @@ public interface Stack<T> extends Collection<T> {
 	 * @return true if the stack changed as a result of the call.
 	 */
 	default boolean swap() {
+		if (size() < 2) {
+			return false;
+		}
 		return reverseTop(2);
 	}
 

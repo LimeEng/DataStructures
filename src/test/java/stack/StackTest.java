@@ -99,7 +99,7 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testRotateAllWithEmptyStack() {
-
+		
 	}
 
 	@Test
@@ -285,14 +285,19 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testReverseTopWithEmptyStack() {
-		boolean success = stack.reverseTop(10);
-		assertFalse("Reversing top returns wrong success indicator", success);
+		boolean exceptionThrown = false;
+		try {
+			stack.reverseTop(10);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("Reversing with illegal arguments does not throw exception", exceptionThrown);
 	}
 
 	@Test
 	public final void testReverseTopStackWithOneElement() {
 		stack.push(1);
-		boolean success = stack.reverseTop(10);
+		boolean success = stack.reverseTop(stack.size());
 		assertFalse("Reversing top returns wrong success indicator", success);
 	}
 
@@ -309,8 +314,13 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	@Test
 	public final void testReverseTopWithFilledStackAndNegativeParameter() {
 		fillStack(0, 10);
-		boolean success = stack.reverseTop(-1);
-		assertFalse("Reversing top returns wrong success indicator", success);
+		boolean exceptionThrown = false;
+		try {
+			stack.reverseTop(-1);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("Reversing with illegal arguments does not throw exception", exceptionThrown);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
 		List<Integer> actual = stack.popWhile(e -> true);
 		assertEquals("Reversing top does not leave the stack in the correct state", expected, actual);
@@ -328,14 +338,19 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testReverseWithEmptyStack() {
-		boolean success = stack.reverse(0, 10);
-		assertFalse("Reversing with indices returns wrong success indicator", success);
+		boolean exceptionThrown = false;
+		try {
+			stack.reverse(0, 10);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("Reversing with illegal arguments does not throw exception", exceptionThrown);
 	}
 
 	@Test
 	public final void testReverseStackWithOneElement() {
 		stack.push(1);
-		boolean success = stack.reverse(0, 10);
+		boolean success = stack.reverse(0, stack.size());
 		assertFalse("Reversing with indices returns wrong success indicator", success);
 	}
 
@@ -352,31 +367,49 @@ public abstract class StackTest<T extends Stack<Integer>> {
 	@Test
 	public final void testReverseInclusiveNegative() {
 		fillStack(0, 10);
-		boolean success = stack.reverse(-1, 2);
-		assertFalse("Reversing with indices returns wrong success indicator", success);
+		boolean exceptionThrown = false;
+		try {
+			stack.reverse(-1, 2);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("Reversing with illegal arguments does not throw exception", exceptionThrown);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
 		List<Integer> actual = stack.popWhile(e -> true);
-		assertEquals("Reversing with indices does not leave the stack in the correct state", expected, actual);
+		assertEquals("Reversing with illegal arguments does not leave the stack in the correct state", expected,
+				actual);
 	}
 
 	@Test
 	public final void testReverseInclusiveBiggerThanExclusive() {
 		fillStack(0, 10);
-		boolean success = stack.reverse(4, 2);
-		assertFalse("Reversing with indices returns wrong success indicator", success);
+		boolean exceptionThrown = false;
+		try {
+			stack.reverse(4, 2);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("Reversing with illegal arguments does not throw exception", exceptionThrown);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
 		List<Integer> actual = stack.popWhile(e -> true);
-		assertEquals("Reversing with indices does not leave the stack in the correct state", expected, actual);
+		assertEquals("Reversing with illegal arguments does not leave the stack in the correct state", expected,
+				actual);
 	}
 
 	@Test
 	public final void testReverseExclusiveBiggerThanStack() {
 		fillStack(0, 10);
-		boolean success = stack.reverse(0, 20);
-		assertFalse("Reversing with indices returns wrong success indicator", success);
+		boolean exceptionThrown = false;
+		try {
+			stack.reverse(0, 20);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("Reversing with illegal arguments does not throw exception", exceptionThrown);
 		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
 		List<Integer> actual = stack.popWhile(e -> true);
-		assertEquals("Reversing with indices does not leave the stack in the correct state", expected, actual);
+		assertEquals("Reversing with illegal arguments does not leave the stack in the correct state", expected,
+				actual);
 	}
 
 	@Test

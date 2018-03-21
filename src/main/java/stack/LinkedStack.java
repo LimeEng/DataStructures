@@ -56,7 +56,7 @@ public class LinkedStack<T> implements Stack<T> {
 	@Override
 	public boolean reverse(int inclusive, int exclusive) {
 		if (inclusive < 0 || inclusive > exclusive || exclusive > size()) {
-			return false;
+			throw new IllegalArgumentException("Illegal bounds");
 		}
 		int elementsToReverse = exclusive - inclusive;
 		if (elementsToReverse < 2) {

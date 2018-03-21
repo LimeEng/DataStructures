@@ -10,4 +10,4 @@ As of now, only two datastructures are implemented.
 
 The Stack has two (well, three actually) subclasses, each demonstrating two ways to implement it. They are however essentially the same, just implemented with two different subclasses of List.
   
-The Heap currently only has one subclass, implemented with an ArrayStack.
+The Heap currently only has one subclass, implemented with an ArrayList.

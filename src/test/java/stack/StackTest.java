@@ -99,17 +99,34 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testRotateAllWithEmptyStack() {
-		
+		boolean success = stack.rotate(4);
+		assertFalse("Rotating an empty stack returns incorrect success indicator", success);
 	}
 
 	@Test
 	public final void testRotateAllStackWithOneElement() {
-
+		stack.push(1);
+		boolean success = stack.rotate(3);
+		assertFalse("Rotating a stack with one element returns incorrect success indicator", success);
 	}
 
 	@Test
 	public final void testRotateAllWithFilledStack() {
-
+		List<Integer> original = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+		List<Integer> reference = new ArrayList<>(original);
+		stack.push(reference);
+		Collections.reverse(reference);
+		int shift = 2;
+		for (int i = 0; i < shift * 5; i++) {
+			boolean success = stack.rotate(shift);
+			assertTrue("Rotating a filled stack returns incorrect success indicator", success);
+			List<Integer> contents = stack.peekWhile(e -> true);
+			Collections.rotate(reference, shift);
+			assertEquals("The rotating operation does not produce the expected result", original, contents);
+		}
+		// List<Integer> contents = stack.peekWhile(e -> true);
+		// assertEquals("Does not correctly rotate back to the right position",
+		// original, contents);
 	}
 
 	@Test

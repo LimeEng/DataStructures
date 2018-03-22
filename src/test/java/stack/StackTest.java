@@ -254,67 +254,155 @@ public abstract class StackTest<T extends Stack<Integer>> {
 
 	@Test
 	public final void testRotateWithEmptyStack() {
-
+		boolean success = stack.rotate(0, 0, 4);
+		assertFalse("Rotating an empty stack returns incorrect success indicator", success);
+		assertTrue("Rotating an empty stack changes the size", stack.isEmpty());
 	}
 
 	@Test
 	public final void testRotateStackWithOneElement() {
-
+		stack.push(1);
+		boolean success = stack.rotate(0, 1, 3);
+		assertFalse("Rotating a stack with one element returns incorrect success indicator", success);
+		assertTrue("Rotating a stack with one element changes the size", stack.size() == 1);
 	}
 
 	@Test
 	public final void testRotateWithFilledStack() {
-
+		List<Integer> original = new ArrayList<>(Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9));
+		List<Integer> reference = new ArrayList<>(original);
+		stack.push(reference);
+		Collections.reverse(reference);
+		int shift = 2;
+		for (int i = 0; i < shift * 5; i++) {
+			boolean success = stack.rotate(4, 7, shift);
+			assertTrue("Rotating a filled stack returns incorrect success indicator", success);
+			List<Integer> contents = stack.peekWhile(e -> true);
+			Collections.rotate(reference.subList(4, 7), shift);
+			assertEquals("The rotating operation does not produce the expected result", reference, contents);
+		}
 	}
 
 	@Test
 	public final void testRotateWithFilledStackZeroShift() {
-
+		fillStack(0, 10);
+		boolean success = stack.rotate(0, 3, 0);
+		assertFalse("Rotating a filled stack (zero shift) returns incorrect success indicator", success);
 	}
 
 	@Test
 	public final void testRotateWithFilledStackNegativeShift() {
-
+		fillStack(0, 10);
+		boolean success = stack.rotate(0, stack.size(), -1);
+		assertTrue("Rotating a filled stack (negative shift) returns incorrect success indicator", success);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(8, 7, 6, 5, 4, 3, 2, 1, 0, 9));
+		assertEquals("The rotating operation does not produce the expected result", expected, contents);
 	}
 
 	@Test
 	public final void testRotateWithFilledStackGreaterThanSizeShift() {
-
+		fillStack(0, 10);
+		boolean success = stack.rotate(0, stack.size(), 11);
+		assertTrue("Rotating a filled stack (greater than size) returns incorrect success indicator", success);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(0, 9, 8, 7, 6, 5, 4, 3, 2, 1));
+		assertEquals("The rotating operation does not produce the expected result", expected, contents);
 	}
 
 	@Test
 	public final void testRotateWithFilledStackNegativeExclusive() {
-
+		fillStack(0, 10);
+		boolean exceptionThrown = false;
+		try {
+			stack.rotate(0, -1, 2);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("An exception was not thrown when the exclusive index was negative", exceptionThrown);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		assertEquals("The stacks contents changed when provided illegal arguments", expected, contents);
 	}
 
 	@Test
 	public final void testRotateWithFilledStackZeroExclusive() {
-
+		fillStack(0, 10);
+		boolean success = stack.rotate(0, 0, 2);
+		assertFalse("Rotating a filled stack (zero exclusive) returns incorrect success indicator", success);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		assertEquals("The stacks contents changed when provided illegal arguments", expected, contents);
 	}
 
 	@Test
 	public final void testRotateWithFilledStackGreaterThanSizeExclusive() {
-
+		fillStack(0, 10);
+		boolean exceptionThrown = false;
+		try {
+			stack.rotate(0, 15, 11);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("An exception was not thrown when given illegal arguments", exceptionThrown);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		assertEquals("The rotating operation does not produce the expected result", expected, contents);
 	}
 
 	@Test
 	public final void testRotateWithFilledStackNegativeInclusive() {
-
+		fillStack(0, 10);
+		boolean exceptionThrown = false;
+		try {
+			stack.rotate(-4, 5, 11);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("An exception was not thrown when given illegal arguments", exceptionThrown);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		assertEquals("The rotating operation does not produce the expected result", expected, contents);
 	}
 
 	@Test
 	public final void testRotateWithFilledStackZeroInclusive() {
-
+		fillStack(0, 10);
+		boolean success = stack.rotate(0, 5, 1);
+		assertTrue("Rotating a filled stack (zero exclusive) returns incorrect success indicator", success);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(5, 9, 8, 7, 6, 4, 3, 2, 1, 0));
+		assertEquals("The stacks contents changed when provided illegal arguments", expected, contents);
 	}
 
 	@Test
 	public final void testRotateWithFilledStackGreaterThanSizeInclusive() {
-
+		fillStack(0, 10);
+		boolean exceptionThrown = false;
+		try {
+			stack.rotate(15, 17, 11);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("An exception was not thrown when given illegal arguments", exceptionThrown);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		assertEquals("The rotating operation does not produce the expected result", expected, contents);
 	}
 
 	@Test
-	public final void testRotateWithFilledStackInclusiveBiggerThanInclusive() {
-
+	public final void testRotateWithFilledStackInclusiveBiggerThanExclusive() {
+		fillStack(0, 10);
+		boolean exceptionThrown = false;
+		try {
+			stack.rotate(7, 5, 11);
+		} catch (IllegalArgumentException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("An exception was not thrown when given illegal arguments", exceptionThrown);
+		List<Integer> contents = stack.peekWhile(e -> true);
+		List<Integer> expected = new ArrayList<>(Arrays.asList(9, 8, 7, 6, 5, 4, 3, 2, 1, 0));
+		assertEquals("The rotating operation does not produce the expected result", expected, contents);
 	}
 
 	@Test

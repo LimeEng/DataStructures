@@ -49,10 +49,10 @@ public class LinkedStack<T> implements Stack<T> {
 		if (exclusive > size() || inclusive < 0 || inclusive > exclusive) {
 			throw new IllegalArgumentException("Illegal bounds");
 		}
-		if (isEmpty() || shift % size() == 0 || size() < 2) {
+		if (isEmpty() || shift % size() == 0 || size() < 2 || exclusive - inclusive < 2) {
 			return false;
 		}
-		Collections.rotate(contents.subList(contents.size() - exclusive, contents.size() - inclusive), shift);
+		Collections.rotate(contents.subList(contents.size() - exclusive, contents.size() - inclusive), -shift);
 		return true;
 	}
 

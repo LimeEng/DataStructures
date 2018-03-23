@@ -23,6 +23,9 @@ public class ArrayHeap<T> implements Heap<T> {
 		if (order < 1) {
 			throw new IllegalArgumentException("The order must be positive");
 		}
+		if (comp == null) {
+			throw new NullPointerException("The provided comparator must not be null");
+		}
 		this.contents = new ArrayList<>();
 		this.order = order;
 		this.comp = comp;

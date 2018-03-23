@@ -97,7 +97,7 @@ public interface Stack<T> extends Collection<T> {
 		if (exclusive > size() || inclusive < 0 || inclusive > exclusive) {
 			throw new IllegalArgumentException("Illegal bounds");
 		}
-		if (shift % size() == 0 || size() < 2) {
+		if (isEmpty() || shift % size() == 0 || size() < 2 || exclusive - inclusive < 2) {
 			return false;
 		}
 		List<T> contents = pop(size());
@@ -120,7 +120,7 @@ public interface Stack<T> extends Collection<T> {
 	 */
 	default boolean reverse(int inclusive, int exclusive) {
 		if (inclusive < 0 || inclusive > exclusive || exclusive > size()) {
-			return false;
+			throw new IllegalArgumentException("Illegal bounds");
 		}
 		int elementsToReverse = exclusive - inclusive;
 		if (elementsToReverse < 2) {
@@ -162,6 +162,9 @@ public interface Stack<T> extends Collection<T> {
 	 * @return true if the stack changed as a result of the call.
 	 */
 	default boolean swap() {
+		if (size() < 2) {
+			return false;
+		}
 		return reverseTop(2);
 	}
 

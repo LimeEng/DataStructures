@@ -29,6 +29,17 @@ public class ArrayHeapTest extends HeapTest<ArrayHeap<Integer>> {
 	}
 
 	@Test
+	public void testConstructorNullComparator() {
+		boolean exceptionThrown = false;
+		try {
+			new ArrayHeap<>(3, null);
+		} catch (NullPointerException e) {
+			exceptionThrown = true;
+		}
+		assertTrue("Exception not thrown when initializing an arrayheap with a null comparator", exceptionThrown);
+	}
+
+	@Test
 	public void testComparatorBasic() {
 		Heap<Integer> heap1 = new ArrayHeap<>(3, (a, b) -> -Integer.compare(a, b));
 		Heap<Integer> heap2 = new ArrayHeap<>(3, (a, b) -> Integer.compare(a, b));

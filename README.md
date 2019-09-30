@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/LimeEng/DataStructures.svg?branch=master)](https://travis-ci.org/LimeEng/DataStructures)
+![](https://github.com/LimeEng/DataStructures/workflows/Java%20CI/badge.svg)
 
 A growing collection of various datastructures implemented in Java.
 
